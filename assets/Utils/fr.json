@@ -1,0 +1,32 @@
+{
+  "login": {
+    "title": "SocialGather",
+    "label_1": "Se connecter",
+    "label_2": "Email",
+    "label_3": "Mot de passe",
+    "label_4": "Se souvenir du mot de passe",
+    "label_5": "Mot de passe oublié?",
+    "label_6": "Tu n'as pas de compte?",
+    "label_7": "S'enregister",
+    "format_1": "email: johndoe@gmail.com",
+    "format_2": "Le mot de passe doit contenir une majuscule, un chiffre, un caractère spécial, et doit avoir une taille de huit caratères",
+    "error_1": "Tout les champs sont requis",
+    "error_2": "Mauvais format",
+    "error_3": "L'authentification n'a pas pu aboutir"
+  },
+  "register": {
+    "title": "S'enregistrer",
+    "label_1": "Prénom",
+    "label_2": "Nom",
+    "label_3": "Pseudo",
+    "label_4": "Email",
+    "label_5": "Mot de passe",
+    "label_6": "Confirmer mot de passe",
+    "format_1": "email: johndoe@gmail.com",
+    "format_2": "Le mot de passe doit contenir une majuscule, un chiffre, un caractère spécial, et doit avoir une taille de huit caratères",
+    "error_1": "Tout les champs sont requis",
+    "error_2": "Mauvais format",
+    "error_3": "Les mots de passe ne sont pas identiques",
+    "error_4": "L'authentification n'a pas pu aboutir"
+  }
+}
