@@ -1,31 +1,37 @@
-export const AuthReducer = (state, action) => {
+export const RequestReducer = (state, action) => {
+  console.log(action.type, action.payload);
   switch (action.type) {
-    case "ONBORDING_SEEN":
+    case "ONBOARDING_SEEN":
       return {
         ...state,
         userFirstAppearance: false,
       };
-    case "SET_USER":
+
+    case "SET_EVENTS":
       return {
         ...state,
-        userId: action.payload,
+        events: action.payload,
       };
 
-    case "LOGIN_START":
+    case "CREATED_PROFILE":
+      return {
+        ...state,
+        userCreatedProfile: "done",
+      };
+    case "REQUEST_START":
       return {
         ...state,
         isFetching: true,
         error: false,
       };
 
-    case "LOGIN_SUCCEED":
+    case "REQUEST_SUCCEED":
       return {
         ...state,
-        userId: action.payload.userId,
-        userToken: action.payload.token,
+        user: action.payload,
         isFetching: false,
       };
-    case "LOGIN_FAILURE":
+    case "REQUEST_FAILURE":
       return {
         ...state,
         isFetching: false,

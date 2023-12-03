@@ -13,14 +13,15 @@ import {
 import Tooltip from "react-native-walkthrough-tooltip";
 import Json from "../../assets/Utils/fr.json";
 import { handleRegister } from "./Register.function";
-import { AuthContext } from "../../Context/AuthContext/AuthContext";
+import { RequestContext } from "../../Context/RequestContext/RequestContext";
 
-export const Register = ({ navigation }) => {
+export const Register = ({ states }) => {
   const [userCredentials, setUserCredentials] = useState({});
   const [showEmailTip, setEmailTip] = useState(false);
   const [showPasswordTip, setPasswordTip] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-  const { dispatch, isFetching, error } = useContext(AuthContext);
+  const { dispatch, isFetching, error } = useContext(RequestContext);
+  const { setUser } = states;
 
   return (
     <View>
@@ -115,16 +116,16 @@ export const Register = ({ navigation }) => {
       />
       {!isFetching ? (
         <Button
-          title="Login"
+          title={Json.register.title}
           onPress={async () => {
             if (errorMessage) {
               setErrorMessage(null);
             }
-            const err = await handleRegister(userCredentials, dispatch);
-            if (err) {
-              setErrorMessage(err);
+            const res = await handleRegister(userCredentials, dispatch);
+            if (!res.id) {
+              setErrorMessage(res);
             } else {
-              navigation.navigate("Login");
+              setUser(res);
             }
           }}
         />

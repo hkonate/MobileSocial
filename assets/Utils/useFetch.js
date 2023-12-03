@@ -1,12 +1,15 @@
 import useSecureStore from "./useSecureStore";
 
-export const Fetch = async () => {
+const Fetch = async () => {
   const { getValue } = useSecureStore();
-  const token = JSON.parse(await getValue("userCredentials")).token;
-  console.log("token parsed: ", token);
+  const token = JSON.parse(await getValue("userCredentials"));
   const headers = {
-    Authorization: token,
-    "Content-type": "application/json; charset=UTF-8",
+    Authorization: `Bearer ${token.authTokens.pop()}`,
+    "Content-Type": "application/json charset=utf-8",
+  };
+  const headersMultipart = {
+    Authorization: `Bearer ${token.authTokens.pop()}`,
+    "Content-Type": "multipart/form-data",
   };
   const GET = async (route) => {
     try {
@@ -14,13 +17,16 @@ export const Fetch = async () => {
         `https://social-gather-production.up.railway.app/${route}`,
         { method: "GET", headers }
       );
+      console.log(response.ok);
       if (response.ok) {
         const data = await response.json();
         return data;
       } else {
+        const data = await response.json();
         return null;
       }
     } catch (error) {
+      console.log("error", error);
       return null;
     }
   };
@@ -40,16 +46,17 @@ export const Fetch = async () => {
       return null;
     }
   };
-  const PUT = async (route, body) => {
+  const PUT = async (route, formdata) => {
     try {
       const response = await fetch(
         `https://social-gather-production.up.railway.app/${route}`,
-        { method: "PUT", headers, body: JSON.stringify(body) }
+        { method: "PUT", headers: headersMultipart, body: formdata }
       );
       if (response.ok) {
         const data = await response.json();
         return data;
       } else {
+        const data = await response.json();
         return null;
       }
     } catch (error) {
@@ -80,3 +87,5 @@ export const Fetch = async () => {
     DELETE,
   };
 };
+
+export default Fetch;

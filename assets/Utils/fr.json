@@ -28,5 +28,28 @@
     "error_2": "Mauvais format",
     "error_3": "Les mots de passe ne sont pas identiques",
     "error_4": "L'authentification n'a pas pu aboutir"
+  },
+  "profile": {
+    "title": "Remplir le profil",
+    "label_1": "description",
+    "label_2": "hobbies",
+    "label_3": "Félicitation",
+    "label_4": "Continuer",
+    "label_5": "Votre compte est prêt à être utilisé. Vous serez redirigé vers la page d'accueil dans quelques secondes."
+  },
+  "home": {
+    "title": "Home",
+    "label_1": "Événement à venir",
+    "label_2": "À proximité de vous",
+    "label_3": "Bonjour",
+    "label_4": "Quel événement recherchez-vous?",
+    "label_5": "Évènements"
+  },
+  "event": {
+    "title": "Event",
+    "label_1": "Organisateur",
+    "label_2": "A propos de",
+    "label_3": "Gallerie",
+    "label_4": "Lieu"
   }
 }

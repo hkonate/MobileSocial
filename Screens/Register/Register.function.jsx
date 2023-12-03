@@ -1,18 +1,18 @@
 import {
-  LoginFailure,
-  LoginStart,
-  LoginSucceed,
-} from "../../Context/AuthContext/AuthActions";
+  RequestFailure,
+  RequestStart,
+  RequestSucceed,
+} from "../../Context/RequestContext/RequestActions";
+import { setItemAsync } from "expo-secure-store";
 
 export const handleRegister = async (userCredential, dispatch) => {
-  dispatch(LoginStart());
+  dispatch(RequestStart());
   const { firstname, lastname, pseudo, email, pwd, confirmPwd } =
     userCredential;
   //Empty input
   for (key in userCredential) {
-    console.log(key);
     if (!userCredential[key] || userCredential[key].trim().length === 0) {
-      dispatch(LoginFailure());
+      dispatch(RequestFailure());
       return "error_1";
     }
   }
@@ -25,17 +25,17 @@ export const handleRegister = async (userCredential, dispatch) => {
     !confirmPwd.match(regexPassword) ||
     !pwd.match(regexPassword)
   ) {
-    dispatch(LoginFailure());
+    dispatch(RequestFailure());
     return "error_2";
   }
   //Password not the same
   if (pwd.trim().length !== confirmPwd.trim().length) {
-    dispatch(LoginFailure());
+    dispatch(RequestFailure());
     return "error_3";
   }
   for (let i = 0; i < pwd.length; i++) {
     if (pwd[i] !== confirmPwd[i]) {
-      dispatch(LoginFailure());
+      dispatch(RequestFailure());
       return "error_3";
     }
   }
@@ -59,19 +59,21 @@ export const handleRegister = async (userCredential, dispatch) => {
     );
     //register succeed
     if (response.ok) {
-      dispatch(LoginSucceed());
-      return null;
+      const userCredentials = await response.json();
+      dispatch(RequestSucceed(userCredentials));
+      await setItemAsync("userCredentials", JSON.stringify(userCredentials));
+      return userCredentials;
     } else {
       //register failed
       const err = await response.json();
-      dispatch(LoginFailure());
+      dispatch(RequestFailure());
       return "error_4";
     }
     //return error
 
     //catch
   } catch (error) {
-    dispatch(LoginFailure());
+    dispatch(RequestFailure());
     return "error_4";
   }
   //return error

@@ -1,20 +1,20 @@
 import { setItemAsync } from "expo-secure-store";
 import {
-  LoginFailure,
-  LoginStart,
-  LoginSucceed,
-} from "../../Context/AuthContext/AuthActions";
+  RequestFailure,
+  RequestStart,
+  RequestSucceed,
+} from "../../Context/RequestContext/RequestActions";
 
 export const handleSubmit = async (email, password, dispatch) => {
   try {
-    dispatch(LoginStart());
+    dispatch(RequestStart());
     if (
       !email ||
       !password ||
       email.trim().length === 0 ||
       password.trim().length === 0
     ) {
-      dispatch(LoginFailure());
+      dispatch(RequestFailure());
       return "error_1";
     }
     const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -24,7 +24,7 @@ export const handleSubmit = async (email, password, dispatch) => {
       email.match(regexEmail) === null ||
       password.match(regexPassword) === null
     ) {
-      dispatch(LoginFailure());
+      dispatch(RequestFailure());
       return "error_2";
     }
     const response = await fetch(
@@ -42,16 +42,16 @@ export const handleSubmit = async (email, password, dispatch) => {
     );
     if (response.ok) {
       const userCredentials = await response.json();
-      dispatch(LoginSucceed(userCredentials));
+      dispatch(RequestSucceed(userCredentials));
       await setItemAsync("userCredentials", JSON.stringify(userCredentials));
-      return null;
+      return data;
     } else {
       await response.json();
-      dispatch(LoginFailure());
+      dispatch(RequestFailure());
       return "error_3";
     }
   } catch (error) {
-    dispatch(LoginFailure());
+    dispatch(RequestFailure());
     return "error_3";
   }
 };
