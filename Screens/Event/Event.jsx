@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import React, { useContext } from "react";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
-
+import Json from "../../assets/Utils/fr.json";
 const Event = ({ route }) => {
   const { events } = useContext(RequestContext);
   const event = route.params;
@@ -27,7 +27,23 @@ const Event = ({ route }) => {
         <View></View>
         <Text>{event.address}</Text>
       </View>
-      <Text>Event</Text>
+      <View>
+        <View
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 25,
+            overflow: "hidden",
+            backgroundColor: "lightgray",
+          }}
+        >
+          <Image />
+        </View>
+        <View>
+          <Text>{event.creator.pseudo}</Text>
+          <Text>{Json.event.label_5}</Text>
+        </View>
+      </View>
     </ScrollView>
   );
 };
