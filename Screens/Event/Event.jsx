@@ -1,9 +1,17 @@
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Button,
+} from "react-native";
 import React, { useContext } from "react";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
 import Json from "../../assets/Utils/fr.json";
-const Event = ({ route }) => {
-  const { events } = useContext(RequestContext);
+const Event = ({ route, navigation }) => {
+  const { events, user } = useContext(RequestContext);
   const event = route.params;
   const similarEvents = events.filter((eventTofilter) => {
     if (event.id !== eventTofilter.id) {
@@ -18,7 +26,19 @@ const Event = ({ route }) => {
   return (
     <ScrollView>
       <Text>{event.title}</Text>
-      <Text>{event.listOfAttendees.length}</Text>
+      <View>
+        <Text>{event.listOfAttendees.length}</Text>
+        <Button
+          title={
+            event.listOfAttendees.includes(user.id)
+              ? Json.event.label_9
+              : Json.event.label_8
+          }
+          onPress={(e) => {
+            console.log(e.currentTarget.title);
+          }}
+        />
+      </View>
       <View>
         <View></View>
         <Text>{date}</Text>
@@ -43,6 +63,28 @@ const Event = ({ route }) => {
           <Text>{event.creator.pseudo}</Text>
           <Text>{Json.event.label_5}</Text>
         </View>
+        <Text>{Json.event.label_6}</Text>
+        <Text> {event.description} </Text>
+        <Text> {Json.event.label_3} </Text>
+        <View></View>
+        <Text>{Json.event.label_4}</Text>
+        <View></View>
+        <Text>{Json.event.label_7}</Text>
+        {similarEvents.map((similarEvent, idx) => (
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#f9c2ff",
+              padding: 20,
+              marginVertical: 8,
+            }}
+            key={idx}
+            onPress={() => {
+              navigation.push(Json.event.title, similarEvent);
+            }}
+          >
+            <Text>{similarEvent.title}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </ScrollView>
   );
