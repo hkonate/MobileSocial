@@ -1,5 +1,4 @@
 export const RequestReducer = (state, action) => {
-  console.log(action.type, action.payload);
   switch (action.type) {
     case "ONBOARDING_SEEN":
       return {
@@ -11,6 +10,15 @@ export const RequestReducer = (state, action) => {
       return {
         ...state,
         events: action.payload,
+      };
+
+    case "SET_EVENT":
+      return {
+        ...state,
+        events: [
+          ...state.events.filter((event) => event.id !== action.payload.id),
+          action.payload,
+        ],
       };
 
     case "CREATED_PROFILE":

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,23 +13,27 @@ import Fetch from "../../assets/Utils/useFetch";
 import Json from "../../assets/Utils/fr.json";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
 import { filterEvents } from "./Home.function";
-import useSecureStore from "../../assets/Utils/useSecureStore";
 import { SetEvents } from "../../Context/RequestContext/RequestActions";
+import { useFocusEffect } from "@react-navigation/native";
+
 export const Home = ({ navigation }) => {
   const [events, setEvents] = useState(null);
   const { user, dispatch } = useContext(RequestContext);
   const DATA = [];
-  useEffect(() => {
-    const eventsRequest = async () => {
-      const fetchEvents = await Fetch();
-      const eventsResponse = await fetchEvents.GET("event");
-      if (eventsResponse !== undefined) {
-        dispatch(SetEvents(eventsResponse));
-        setEvents(eventsResponse);
-      }
-    };
-    eventsRequest();
-  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const eventsRequest = async () => {
+        const fetchEvents = await Fetch();
+        const eventsResponse = await fetchEvents.GET("event");
+        if (eventsResponse !== undefined) {
+          dispatch(SetEvents(eventsResponse));
+          setEvents(eventsResponse);
+        }
+      };
+      eventsRequest();
+    }, [])
+  );
 
   if (events) {
     const upComingEvents = filterEvents(events);

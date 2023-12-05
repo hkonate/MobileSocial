@@ -6,6 +6,10 @@ export const SetEvents = (events) => ({
   type: "SET_EVENTS",
   payload: events,
 });
+export const SetEvent = (event) => ({
+  type: "SET_EVENT",
+  payload: event,
+});
 
 export const CreatedProfile = () => ({
   type: "CREATED_PROFILE",

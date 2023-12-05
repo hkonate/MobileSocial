@@ -7,35 +7,53 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
 import Json from "../../assets/Utils/fr.json";
-const Event = ({ route, navigation }) => {
-  const { events, user } = useContext(RequestContext);
-  const event = route.params;
+import { handleAttendee, handleDelete } from "./Event.functions";
+import { SetEvent } from "../../Context/RequestContext/RequestActions";
+const Event = ({ route, navigation: { goBack } }) => {
+  const [event, setEvent] = useState(null);
+  const { events, user, dispatch } = useContext(RequestContext);
+  useEffect(() => {
+    const eventRoute = route.params;
+    setEvent(eventRoute);
+  }, []);
+  if (event)
+    console.log(
+      events.find((events) => events.id === event?.id),
+      event,
+      "new Event"
+    );
   const similarEvents = events.filter((eventTofilter) => {
-    if (event.id !== eventTofilter.id) {
-      if (event.inclusive.length > 0) {
+    if (event?.id !== eventTofilter.id) {
+      if (event?.inclusive.length > 0) {
         return eventTofilter.inclusive.length > 0;
       } else {
         return eventTofilter.inclusive.length === 0;
       }
     }
   });
-  const date = new Date(event.schedule).toString().split("(").pop();
+  const titleBtn = event?.listOfAttendees.find(
+    (attendee) => attendee.id === user.id
+  )
+    ? Json.event.label_9
+    : Json.event.label_8;
+  const date = new Date(event?.schedule).toString().split("(").pop();
   return (
     <ScrollView>
-      <Text>{event.title}</Text>
+      <Text>{event?.title}</Text>
       <View>
-        <Text>{event.listOfAttendees.length}</Text>
+        <Text>{event?.listOfAttendees.length}</Text>
         <Button
-          title={
-            event.listOfAttendees.includes(user.id)
-              ? Json.event.label_9
-              : Json.event.label_8
-          }
-          onPress={(e) => {
-            console.log(e.currentTarget.title);
+          title={titleBtn}
+          onPress={async () => {
+            const data = await handleAttendee(titleBtn, event?.id);
+            console.log(data);
+            if (data) {
+              dispatch(SetEvent(data));
+              setEvent(data);
+            }
           }}
         />
       </View>
@@ -45,26 +63,36 @@ const Event = ({ route, navigation }) => {
       </View>
       <View>
         <View></View>
-        <Text>{event.address}</Text>
+        <Text>{event?.address}</Text>
       </View>
       <View>
-        <View
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-            overflow: "hidden",
-            backgroundColor: "lightgray",
-          }}
-        >
-          <Image />
-        </View>
         <View>
-          <Text>{event.creator.pseudo}</Text>
-          <Text>{Json.event.label_5}</Text>
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 25,
+              overflow: "hidden",
+              backgroundColor: "lightgray",
+            }}
+          >
+            <Image />
+          </View>
+          <View>
+            <Text>{event?.creator.pseudo}</Text>
+            <Text>{Json.event.label_5}</Text>
+          </View>
+          <Button
+            title={Json.event.label_10}
+            onPress={async () => {
+              const deletedEvent = await handleDelete(event.id);
+              console.log(deletedEvent, user.authTokens);
+              if (deletedEvent) goBack();
+            }}
+          />
         </View>
         <Text>{Json.event.label_6}</Text>
-        <Text> {event.description} </Text>
+        <Text> {event?.description} </Text>
         <Text> {Json.event.label_3} </Text>
         <View></View>
         <Text>{Json.event.label_4}</Text>

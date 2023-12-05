@@ -17,7 +17,6 @@ const Fetch = async () => {
         `https://social-gather-production.up.railway.app/${route}`,
         { method: "GET", headers }
       );
-      console.log(response.ok);
       if (response.ok) {
         const data = await response.json();
         return data;
@@ -36,8 +35,8 @@ const Fetch = async () => {
         `https://social-gather-production.up.railway.app/${route}`,
         { method: "POST", headers, body: JSON.stringify(body) }
       );
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
         return data;
       } else {
         return null;
@@ -46,7 +45,7 @@ const Fetch = async () => {
       return null;
     }
   };
-  const PUT = async (route, formdata) => {
+  const PUTMEDIA = async (route, formdata) => {
     try {
       const response = await fetch(
         `https://social-gather-production.up.railway.app/${route}`,
@@ -63,19 +62,42 @@ const Fetch = async () => {
       return null;
     }
   };
-  const DELETE = async () => {
+  const PUT = async (route, body) => {
+    try {
+      const response = await fetch(
+        `https://social-gather-production.up.railway.app/${route}`,
+        { method: "PUT", headers, body }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("dataGood: ");
+        return data;
+      } else {
+        const data = await response.json();
+        console.log("dataerror: ");
+        return null;
+      }
+    } catch (error) {
+      console.log("error: ", error);
+      return null;
+    }
+  };
+  const DELETE = async (route) => {
     try {
       const response = await fetch(
         `https://social-gather-production.up.railway.app/${route}`,
         { method: "DELETE", headers }
       );
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
+        console.log("good", data);
         return data;
       } else {
+        console.log("error", data);
         return null;
       }
     } catch (error) {
+      console.log(" true error", data);
       return null;
     }
   };
@@ -84,6 +106,7 @@ const Fetch = async () => {
     GET,
     POST,
     PUT,
+    PUTMEDIA,
     DELETE,
   };
 };
