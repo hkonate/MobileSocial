@@ -29,7 +29,7 @@
     "error_3": "Les mots de passe ne sont pas identiques",
     "error_4": "L'authentification n'a pas pu aboutir"
   },
-  "profile": {
+  "createProfile": {
     "title": "Remplir le profil",
     "label_1": "description",
     "label_2": "hobbies",
@@ -56,6 +56,27 @@
     "label_7": "Plus d'événements comme celui-ci",
     "label_8": "Participer",
     "label_9": "Ne plus participer",
-    "label_10": "Supprimer l'évènement"
+    "label_10": "Supprimer l'évènement",
+    "label_11": "Régime alimentaires"
+  },
+  "editEvent": {
+    "title": "Editer l'event",
+    "label_1": "Titre",
+    "label_2": "Régime alimentaires",
+    "label_3": "Adresse",
+    "label_4": "Limit",
+    "label_5": "Gallerie",
+    "label_6": "Modifier"
+  },
+  "profile": {
+    "title": "Profile",
+    "label_1": "Firstname",
+    "label_2": "Lastname",
+    "label_3": "Pseudo",
+    "label_4": "Avatar",
+    "label_5": "Email",
+    "label_6": "A propos de moi",
+    "label_7": "Hobbies",
+    "label_8": "Modifier"
   }
 }

@@ -10,6 +10,7 @@ import { Home } from "./Screens/Home/Home";
 import useSecureStore from "./assets/Utils/useSecureStore";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Event from "./Screens/Event/Event";
+import EditEvent from "./Screens/EditEvent/EditEvent";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,7 +51,7 @@ export default function App() {
               </Stack.Screen>
             </>
           ) : !createdProfile ? (
-            <Stack.Screen name={Json.profile.title}>
+            <Stack.Screen name={Json.createProfile.title}>
               {(props) => <CreateProfile {...props} states={states} />}
             </Stack.Screen>
           ) : (
@@ -60,6 +61,9 @@ export default function App() {
               </Stack.Screen>
               <Stack.Screen name={Json.event.title} options={{ title: null }}>
                 {(props) => <Event {...props} />}
+              </Stack.Screen>
+              <Stack.Screen name={Json.editEvent.title}>
+                {(props) => <EditEvent {...props} />}
               </Stack.Screen>
             </>
           )}

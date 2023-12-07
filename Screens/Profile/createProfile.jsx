@@ -65,16 +65,16 @@ export const CreateProfile = ({ states }) => {
       <Button title="picture" onPress={getPermissionAndTakePicture} />
       <TextInput
         style={styles.input}
-        placeholder={Json.profile.label_1}
+        placeholder={Json.createProfile.label_1}
         onChangeText={(text) => setDesc(text)}
       />
       <TextInput
         style={styles.input}
-        placeholder={Json.profile.label_2}
+        placeholder={Json.createProfile.label_2}
         onChangeText={(text) => setHobbies(text)}
       />
       <Button
-        title={Json.profile.label_4}
+        title={Json.createProfile.label_4}
         onPress={async () => {
           const result = await handleUpdate(
             selectedPicture,
