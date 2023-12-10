@@ -57,16 +57,29 @@
     "label_8": "Participer",
     "label_9": "Ne plus participer",
     "label_10": "Supprimer l'évènement",
-    "label_11": "Régime alimentaires"
+    "label_11": "Régime alimentaires",
+    "label_12": "Modifier l'évènement"
+  },
+  "createEvent": {
+    "title": "Editer l'event",
+    "label_1": "Titre",
+    "label_2": "Régime alimentaires",
+    "label_3": "Adresse",
+    "label_4": "Participants",
+    "label_5": "Gallerie",
+    "label_6": "Description",
+    "label_7": "Date",
+    "label_8": "Créer de l'évènement"
   },
   "editEvent": {
     "title": "Editer l'event",
     "label_1": "Titre",
     "label_2": "Régime alimentaires",
     "label_3": "Adresse",
-    "label_4": "Limit",
+    "label_4": "Participants",
     "label_5": "Gallerie",
-    "label_6": "Modifier"
+    "label_6": "Modifier",
+    "label_7": "Description"
   },
   "profile": {
     "title": "Profile",

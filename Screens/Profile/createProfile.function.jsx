@@ -21,7 +21,7 @@ export const handleUpdate = async (selectedPicture, bio, hobbies, dispatch) => {
         formdata.append("hobbies", hobbies);
       }
       const useFetch = await Fetch();
-      const data = await useFetch.PUT("profile", formdata);
+      const data = await useFetch.PUTMEDIA("profile", formdata);
       if (data) {
         const { setValue } = useSecureStore();
         await setValue("createdProfile", JSON.stringify("done"));

@@ -71,7 +71,7 @@ export const Home = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.item}
-            onPress={() => navigation.navigate(Json.event.title, item)}
+            onPress={() => navigation.navigate(Json.event.title, item.id)}
           >
             <Text style={styles.title}>{item.title}</Text>
           </TouchableOpacity>

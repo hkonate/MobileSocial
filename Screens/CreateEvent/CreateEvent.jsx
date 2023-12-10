@@ -1,16 +1,10 @@
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
-import React, { useState } from "react";
+import { StyleSheet, Text, View, TextInput } from "react-native";
+import React from "react";
 import Json from "../../assets/Utils/fr.json";
-import {
-  getPermissionAndGetPicture,
-  getPermissionAndTakePicture,
-  handleChange,
-} from "./Edit.function.jsx";
 
-const EditEvent = ({ route, navigation: { goBack } }) => {
+const CreateEvent = () => {
   const [inputsData, setInputsData] = useState([]);
   const [emptyField, setEmptyField] = useState(true);
-  const eventId = route.params;
   const emptyInputs = Object.values(inputsData).find((value) => {
     const key = Object.keys(value)[0];
     if (typeof value[key] === "string") {
@@ -27,7 +21,7 @@ const EditEvent = ({ route, navigation: { goBack } }) => {
   return (
     <View>
       <TextInput
-        placeholder={Json.editEvent.label_1}
+        placeholder={Json.createEvent.label_1}
         onChangeText={(text) =>
           setInputsData((prev) => {
             const index = prev.findIndex((input) => "title" in input);
@@ -39,7 +33,7 @@ const EditEvent = ({ route, navigation: { goBack } }) => {
         }
       />
       <TextInput
-        placeholder={Json.editEvent.label_1}
+        placeholder={Json.createEvent.label_6}
         onChangeText={(text) =>
           setInputsData((prev) => {
             const index = prev.findIndex((input) => "description" in input);
@@ -74,40 +68,10 @@ const EditEvent = ({ route, navigation: { goBack } }) => {
           })
         }
       />
-      <Button
-        title="Prendre une photo"
-        onPress={async () => {
-          await getPermissionAndTakePicture(setInputsData);
-        }}
-      />
-      <Button
-        title="Gallerie"
-        onPress={async () => {
-          await getPermissionAndGetPicture(setInputsData);
-        }}
-      />
-      <Button
-        title="Supprimer les photos"
-        onPress={() => {
-          setInputsData((prev) => {
-            const index = prev.findIndex((input) => "files" in input);
-            index !== -1 && prev.splice(index, 1);
-            return [...prev];
-          });
-        }}
-      />
-      <Button
-        title={Json.editEvent.label_6}
-        onPress={async () => {
-          const updatedEvent = await handleChange(eventId, inputsData);
-          if (updatedEvent) goBack();
-        }}
-        disabled={emptyField}
-      />
     </View>
   );
 };
 
-export default EditEvent;
+export default CreateEvent;
 
 const styles = StyleSheet.create({});

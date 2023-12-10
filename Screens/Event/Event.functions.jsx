@@ -9,7 +9,6 @@ export const handleAttendee = async (attend, eventId) => {
     if (response) return response;
     return null;
   } catch (error) {
-    console.log("error be:", error);
     return null;
   }
 };

@@ -4,11 +4,11 @@ const Fetch = async () => {
   const { getValue } = useSecureStore();
   const token = JSON.parse(await getValue("userCredentials"));
   const headers = {
-    Authorization: `Bearer ${token.authTokens.pop()}`,
+    Authorization: `Bearer ${token.authTokens[token.authTokens.length - 1]}`,
     "Content-Type": "application/json charset=utf-8",
   };
   const headersMultipart = {
-    Authorization: `Bearer ${token.authTokens.pop()}`,
+    Authorization: `Bearer ${token.authTokens[token.authTokens.length - 1]}`,
     "Content-Type": "multipart/form-data",
   };
   const GET = async (route) => {
@@ -25,7 +25,6 @@ const Fetch = async () => {
         return null;
       }
     } catch (error) {
-      console.log("error", error);
       return null;
     }
   };
@@ -70,15 +69,12 @@ const Fetch = async () => {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log("dataGood: ");
         return data;
       } else {
         const data = await response.json();
-        console.log("dataerror: ");
         return null;
       }
     } catch (error) {
-      console.log("error: ", error);
       return null;
     }
   };

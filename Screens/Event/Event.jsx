@@ -12,19 +12,29 @@ import { RequestContext } from "../../Context/RequestContext/RequestContext";
 import Json from "../../assets/Utils/fr.json";
 import { handleAttendee, handleDelete } from "./Event.functions";
 import { SetEvent } from "../../Context/RequestContext/RequestActions";
-const Event = ({ route, navigation: { goBack } }) => {
+import { useFocusEffect } from "@react-navigation/native";
+import Fetch from "../../assets/Utils/useFetch";
+const Event = ({ route, navigation: { goBack, navigate } }) => {
   const [event, setEvent] = useState(null);
   const { events, user, dispatch } = useContext(RequestContext);
-  useEffect(() => {
-    const eventRoute = route.params;
-    setEvent(eventRoute);
-  }, []);
-  if (event)
-    console.log(
-      events.find((events) => events.id === event?.id),
-      event,
-      "new Event"
-    );
+  useFocusEffect(
+    React.useCallback(() => {
+      const eventId = route.params;
+      const fetchEvent = async () => {
+        const fetch = await Fetch();
+        const res = await fetch.GET(`event/${eventId}`);
+        if (!res) {
+          return (
+            <View>
+              <Text>Not Found</Text>
+            </View>
+          );
+        }
+        setEvent(res);
+      };
+      fetchEvent();
+    }, [])
+  );
   const similarEvents = events.filter((eventTofilter) => {
     if (event?.id !== eventTofilter.id) {
       if (event?.inclusive.length > 0) {
@@ -43,13 +53,13 @@ const Event = ({ route, navigation: { goBack } }) => {
   return (
     <ScrollView>
       <Text>{event?.title}</Text>
+      <Text>{event?.images.length}</Text>
       <View>
         <Text>{event?.listOfAttendees.length}</Text>
         <Button
           title={titleBtn}
           onPress={async () => {
             const data = await handleAttendee(titleBtn, event?.id);
-            console.log(data);
             if (data) {
               dispatch(SetEvent(data));
               setEvent(data);
@@ -86,9 +96,12 @@ const Event = ({ route, navigation: { goBack } }) => {
             title={Json.event.label_10}
             onPress={async () => {
               const deletedEvent = await handleDelete(event.id);
-              console.log(deletedEvent, user.authTokens);
               if (deletedEvent) goBack();
             }}
+          />
+          <Button
+            title={Json.event.label_12}
+            onPress={() => navigate(Json.editEvent.title, event.id)}
           />
         </View>
         <Text>{Json.event.label_6}</Text>
