@@ -61,7 +61,7 @@
     "label_12": "Modifier l'évènement"
   },
   "createEvent": {
-    "title": "Editer l'event",
+    "title": "Créer un évènement",
     "label_1": "Titre",
     "label_2": "Régime alimentaires",
     "label_3": "Adresse",
@@ -72,7 +72,7 @@
     "label_8": "Créer de l'évènement"
   },
   "editEvent": {
-    "title": "Editer l'event",
+    "title": "Editer l'évènement",
     "label_1": "Titre",
     "label_2": "Régime alimentaires",
     "label_3": "Adresse",

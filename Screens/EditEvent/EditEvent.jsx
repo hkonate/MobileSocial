@@ -39,7 +39,7 @@ const EditEvent = ({ route, navigation: { goBack } }) => {
         }
       />
       <TextInput
-        placeholder={Json.editEvent.label_1}
+        placeholder={Json.editEvent.label_7}
         onChangeText={(text) =>
           setInputsData((prev) => {
             const index = prev.findIndex((input) => "description" in input);

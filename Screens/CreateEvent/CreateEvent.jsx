@@ -1,23 +1,62 @@
-import { StyleSheet, Text, View, TextInput } from "react-native";
-import React from "react";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { useEffect, useState } from "react";
 import Json from "../../assets/Utils/fr.json";
+import {
+  getPermissionAndGetPicture,
+  getPermissionAndTakePicture,
+  handleChange,
+} from "../EditEvent/Edit.function";
+import { handleCreate } from "./CreateEvent.function";
 
-const CreateEvent = () => {
+const CreateEvent = ({ navigation: { goBack } }) => {
   const [inputsData, setInputsData] = useState([]);
   const [emptyField, setEmptyField] = useState(true);
+  const [wrongDate, setWrongDate] = useState(true);
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    if (
+      !(new Date(currentDate).getTime() > new Date().getTime() + 30 * 60 * 1000)
+    ) {
+      if (!wrongDate) setWrongDate((prev) => !prev);
+    } else {
+      if (wrongDate) setWrongDate((prev) => !prev);
+    }
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
+
+  const showTimepicker = () => {
+    showMode("time");
+  };
+
   const emptyInputs = Object.values(inputsData).find((value) => {
     const key = Object.keys(value)[0];
     if (typeof value[key] === "string") {
-      return value[key].trim().length > 0;
+      return value[key].trim().length === 0;
     } else {
-      return value[key].length;
+      return value[key].length === 0;
     }
   });
   if (emptyInputs) {
-    if (emptyField) setEmptyField((prev) => !prev);
-  } else {
     if (!emptyField) setEmptyField((prev) => !prev);
+  } else {
+    if (emptyField) setEmptyField((prev) => !prev);
   }
+  console.log(emptyField, wrongDate);
   return (
     <View>
       <TextInput
@@ -67,6 +106,44 @@ const CreateEvent = () => {
             return [...prev];
           })
         }
+      />
+      <Button
+        title="Prendre une photo"
+        onPress={async () => {
+          await getPermissionAndTakePicture(setInputsData);
+        }}
+      />
+      <Button
+        title="Gallerie"
+        onPress={async () => {
+          await getPermissionAndGetPicture(setInputsData);
+        }}
+      />
+      <Button onPress={showDatepicker} title="Show date picker!" />
+      <Button onPress={showTimepicker} title="Show time picker!" />
+      <Text>selected: {date.toLocaleString()}</Text>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          onChange={onChange}
+        />
+      )}
+      <Button
+        title={Json.createEvent.label_8}
+        disabled={emptyField || wrongDate}
+        onPress={async () => {
+          try {
+            const res = await handleCreate(date, inputsData);
+            if (res) goBack();
+            console.log(res);
+          } catch (error) {
+            console.log("dam");
+            alert(error);
+          }
+        }}
       />
     </View>
   );

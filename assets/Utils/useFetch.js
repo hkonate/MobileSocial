@@ -28,6 +28,29 @@ const Fetch = async () => {
       return null;
     }
   };
+
+  const POSTMEDIA = async (route, formdata) => {
+    try {
+      console.log("post", route);
+      const response = await fetch(
+        `https://social-gather-production.up.railway.app/${route}`,
+        { method: "POST", headers: headersMultipart, body: formdata }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("sd", data);
+        return data;
+      } else {
+        const data = await response.json();
+        console.log("sd", data);
+        return null;
+      }
+    } catch (error) {
+      console.log("er", error);
+
+      return null;
+    }
+  };
   const POST = async (route, body) => {
     try {
       const response = await fetch(
@@ -61,6 +84,7 @@ const Fetch = async () => {
       return null;
     }
   };
+
   const PUT = async (route, body) => {
     try {
       const response = await fetch(
@@ -86,14 +110,11 @@ const Fetch = async () => {
       );
       const data = await response.json();
       if (response.ok) {
-        console.log("good", data);
         return data;
       } else {
-        console.log("error", data);
         return null;
       }
     } catch (error) {
-      console.log(" true error", data);
       return null;
     }
   };
@@ -101,6 +122,7 @@ const Fetch = async () => {
   return {
     GET,
     POST,
+    POSTMEDIA,
     PUT,
     PUTMEDIA,
     DELETE,

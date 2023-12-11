@@ -8,6 +8,7 @@ import {
   SectionList,
   SafeAreaView,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import Fetch from "../../assets/Utils/useFetch";
 import Json from "../../assets/Utils/fr.json";
@@ -65,6 +66,10 @@ export const Home = ({ navigation }) => {
       <View>
         <TextInput placeholder={Json.event.label_4} />
       </View>
+      <Button
+        title={Json.createEvent.title}
+        onPress={() => navigation.navigate(Json.createEvent.title)}
+      />
       <SectionList
         sections={DATA}
         keyExtractor={(item, index) => item + index}

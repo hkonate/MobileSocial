@@ -11,6 +11,7 @@ import useSecureStore from "./assets/Utils/useSecureStore";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Event from "./Screens/Event/Event";
 import EditEvent from "./Screens/EditEvent/EditEvent";
+import CreateEvent from "./Screens/CreateEvent/CreateEvent";
 
 const Stack = createNativeStackNavigator();
 
@@ -64,6 +65,9 @@ export default function App() {
               </Stack.Screen>
               <Stack.Screen name={Json.editEvent.title}>
                 {(props) => <EditEvent {...props} />}
+              </Stack.Screen>
+              <Stack.Screen name={Json.createEvent.title}>
+                {(props) => <CreateEvent {...props} />}
               </Stack.Screen>
             </>
           )}
