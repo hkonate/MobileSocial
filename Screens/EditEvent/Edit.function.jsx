@@ -39,30 +39,15 @@ export const getPermissionAndGetPicture = async (setSelectedPicture) => {
       });
       if (result.canceled === false) {
         setSelectedPicture((prev) => {
-          const index = prev.findIndex((input) => "files" in input);
-          index !== -1
-            ? prev[index].files.push({
-                uri: result.assets[0].uri,
-                name: `my-pic.${
-                  result.assets[0].uri.split("/").pop().split(".")[0]
-                }`,
-                type: `image/${
-                  result.assets[0].uri.split("/").pop().split(".")[1]
-                }`,
-              })
-            : prev.push({
-                files: [
-                  {
-                    uri: result.assets[0].uri,
-                    name: `my-pic.${
-                      result.assets[0].uri.split("/").pop().split(".")[0]
-                    }`,
-                    type: `image/${
-                      result.assets[0].uri.split("/").pop().split(".")[1]
-                    }`,
-                  },
-                ],
-              });
+          prev.push({
+            uri: result.assets[0].uri,
+            name: `my-pic.${
+              result.assets[0].uri.split("/").pop().split(".")[0]
+            }`,
+            type: `image/${
+              result.assets[0].uri.split("/").pop().split(".")[1]
+            }`,
+          });
           return [...prev];
         });
       }
@@ -81,28 +66,15 @@ export const getPermissionAndTakePicture = async (setSelectedPicture) => {
       const result = await ImagePicker.launchCameraAsync();
       if (result.canceled === false) {
         setSelectedPicture((prev) => {
-          const index = prev.findIndex((input) => "files" in input);
-          index !== -1
-            ? prev[index].files.push({
-                uri: result.assets[0].uri,
-                name: `my-pic.${
-                  result.assets[0].uri.split("/").pop().split(".")[0]
-                }`,
-                type: `image/${
-                  result.assets[0].uri.split("/").pop().split(".")[1]
-                }`,
-              })
-            : prev.push({
-                files: {
-                  uri: result.assets[0].uri,
-                  name: `my-pic.${
-                    result.assets[0].uri.split("/").pop().split(".")[0]
-                  }`,
-                  type: `image/${
-                    result.assets[0].uri.split("/").pop().split(".")[1]
-                  }`,
-                },
-              });
+          prev.push({
+            uri: result.assets[0].uri,
+            name: `my-pic.${
+              result.assets[0].uri.split("/").pop().split(".")[0]
+            }`,
+            type: `image/${
+              result.assets[0].uri.split("/").pop().split(".")[1]
+            }`,
+          });
           return [...prev];
         });
       }

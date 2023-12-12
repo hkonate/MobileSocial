@@ -31,23 +31,18 @@ const Fetch = async () => {
 
   const POSTMEDIA = async (route, formdata) => {
     try {
-      console.log("post", route);
       const response = await fetch(
         `https://social-gather-production.up.railway.app/${route}`,
         { method: "POST", headers: headersMultipart, body: formdata }
       );
       if (response.ok) {
         const data = await response.json();
-        console.log("sd", data);
         return data;
       } else {
         const data = await response.json();
-        console.log("sd", data);
         return null;
       }
     } catch (error) {
-      console.log("er", error);
-
       return null;
     }
   };

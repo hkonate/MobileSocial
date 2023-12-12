@@ -14,15 +14,15 @@ import { handleAttendee, handleDelete } from "./Event.functions";
 import { SetEvent } from "../../Context/RequestContext/RequestActions";
 import { useFocusEffect } from "@react-navigation/native";
 import Fetch from "../../assets/Utils/useFetch";
-const Event = ({ route, navigation: { goBack, navigate } }) => {
+const Event = ({ route, navigation: { goBack, navigate, push } }) => {
   const [event, setEvent] = useState(null);
   const { events, user, dispatch } = useContext(RequestContext);
   useFocusEffect(
     React.useCallback(() => {
-      const eventId = route.params;
+      const event = route.params;
       const fetchEvent = async () => {
         const fetch = await Fetch();
-        const res = await fetch.GET(`event/${eventId}`);
+        const res = await fetch.GET(`event/${event.id}`);
         if (!res) {
           return (
             <View>
@@ -92,17 +92,21 @@ const Event = ({ route, navigation: { goBack, navigate } }) => {
             <Text>{event?.creator.pseudo}</Text>
             <Text>{Json.event.label_5}</Text>
           </View>
-          <Button
-            title={Json.event.label_10}
-            onPress={async () => {
-              const deletedEvent = await handleDelete(event.id);
-              if (deletedEvent) goBack();
-            }}
-          />
-          <Button
-            title={Json.event.label_12}
-            onPress={() => navigate(Json.editEvent.title, event.id)}
-          />
+          {event?.creator.id === user?.id && (
+            <>
+              <Button
+                title={Json.event.label_10}
+                onPress={async () => {
+                  const deletedEvent = await handleDelete(event.id);
+                  if (deletedEvent) goBack();
+                }}
+              />
+              <Button
+                title={Json.event.label_12}
+                onPress={() => navigate(Json.editEvent.title, event.id)}
+              />
+            </>
+          )}
         </View>
         <Text>{Json.event.label_6}</Text>
         <Text> {event?.description} </Text>
@@ -120,7 +124,7 @@ const Event = ({ route, navigation: { goBack, navigate } }) => {
             }}
             key={idx}
             onPress={() => {
-              navigation.push(Json.event.title, similarEvent);
+              push(Json.event.title, similarEvent);
             }}
           >
             <Text>{similarEvent.title}</Text>

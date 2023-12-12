@@ -12,6 +12,7 @@ import { handleCreate } from "./CreateEvent.function";
 const CreateEvent = ({ navigation: { goBack } }) => {
   const [inputsData, setInputsData] = useState([]);
   const [emptyField, setEmptyField] = useState(true);
+  const [files, setFiles] = useState([]);
   const [wrongDate, setWrongDate] = useState(true);
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
@@ -56,7 +57,6 @@ const CreateEvent = ({ navigation: { goBack } }) => {
   } else {
     if (emptyField) setEmptyField((prev) => !prev);
   }
-  console.log(emptyField, wrongDate);
   return (
     <View>
       <TextInput
@@ -110,13 +110,19 @@ const CreateEvent = ({ navigation: { goBack } }) => {
       <Button
         title="Prendre une photo"
         onPress={async () => {
-          await getPermissionAndTakePicture(setInputsData);
+          await getPermissionAndTakePicture(setFiles);
         }}
       />
       <Button
         title="Gallerie"
         onPress={async () => {
-          await getPermissionAndGetPicture(setInputsData);
+          await getPermissionAndGetPicture(setFiles);
+        }}
+      />
+      <Button
+        title="Supprimer les photos"
+        onPress={() => {
+          setFiles([]);
         }}
       />
       <Button onPress={showDatepicker} title="Show date picker!" />
@@ -133,14 +139,12 @@ const CreateEvent = ({ navigation: { goBack } }) => {
       )}
       <Button
         title={Json.createEvent.label_8}
-        disabled={emptyField || wrongDate}
+        disabled={emptyField || wrongDate || files.length === 0}
         onPress={async () => {
           try {
-            const res = await handleCreate(date, inputsData);
+            const res = await handleCreate(files, date, inputsData);
             if (res) goBack();
-            console.log(res);
           } catch (error) {
-            console.log("dam");
             alert(error);
           }
         }}
