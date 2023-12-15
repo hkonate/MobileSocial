@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -69,6 +69,10 @@ export const Home = ({ navigation }) => {
       <Button
         title={Json.createEvent.title}
         onPress={() => navigation.navigate(Json.createEvent.title)}
+      />
+      <Button
+        title="Profil"
+        onPress={() => navigation.navigate(Json.profile.title)}
       />
       <SectionList
         sections={DATA}

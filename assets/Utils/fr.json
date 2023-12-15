@@ -91,5 +91,12 @@
     "label_6": "A propos de moi",
     "label_7": "Hobbies",
     "label_8": "Modifier"
+  },
+  "editProfile": {
+    "title": "Editer le profil",
+    "label_1": "bio",
+    "label_2": "hobbies",
+    "label_3": "picture",
+    "label_4": "pseudo"
   }
 }
