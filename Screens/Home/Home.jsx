@@ -27,6 +27,7 @@ export const Home = ({ navigation }) => {
       const eventsRequest = async () => {
         const fetchEvents = await Fetch();
         const eventsResponse = await fetchEvents.GET("event");
+        console.log(eventsResponse);
         if (eventsResponse !== undefined) {
           dispatch(SetEvents(eventsResponse));
           setEvents(eventsResponse);

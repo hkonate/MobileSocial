@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Login } from "./Screens/Login/Login";
@@ -13,27 +13,34 @@ import Event from "./Screens/Event/Event";
 import EditEvent from "./Screens/EditEvent/EditEvent";
 import CreateEvent from "./Screens/CreateEvent/CreateEvent";
 import Profile from "./Screens/Profile/Profile";
+import EditProfile from "./Screens/EditProfile/EditProfile";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const { getValue } = useSecureStore();
-  const [user, setUser] = useState(async () =>
-    JSON.parse(await getValue("userCredentials"))
-  );
-  const [createdProfile, setCreatedProfile] = useState(async () =>
-    JSON.parse(await getValue("createdProfile"))
-  );
-  const [onBoarding, setOnBoarding] = useState(async () =>
-    JSON.parse(await getValue("onbording"))
-  );
+  const [user, setUser] = useState(null)
+  const [createdProfile, setCreatedProfile] = useState(null);
+  const [onBoarding, setOnBoarding] = useState(null);
+
+  useEffect(()=>{
+    const fetchStorage = async ()=>{
+      const user = JSON.parse(await getValue("userCredentials"))
+      const profile = JSON.parse(await getValue("createdProfile"))
+      const boarding = JSON.parse(await getValue("onbording"))
+      setUser(user)
+      setCreatedProfile(profile)
+      setOnBoarding(boarding)
+    }
+    fetchStorage()
+  },[])
+
   Stack;
   const states = {
     setUser,
     setCreatedProfile,
     setOnBoarding,
   };
-
   return (
     <RequestContextProvider>
       <NavigationContainer>
@@ -72,6 +79,9 @@ export default function App() {
               </Stack.Screen>
               <Stack.Screen name={Json.profile.title}>
                 {(props) => <Profile {...props} />}
+              </Stack.Screen>
+              <Stack.Screen name={Json.editProfile.title}>
+                {(props) => <EditProfile {...props} />}
               </Stack.Screen>
             </>
           )}

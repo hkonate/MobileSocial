@@ -3,6 +3,7 @@ import useSecureStore from "./useSecureStore";
 const Fetch = async () => {
   const { getValue } = useSecureStore();
   const token = JSON.parse(await getValue("userCredentials"));
+  const api = "https://social-gather-production.up.railway.app/"
   const headers = {
     Authorization: `Bearer ${token.authTokens[token.authTokens.length - 1]}`,
     "Content-Type": "application/json charset=utf-8",
@@ -14,7 +15,7 @@ const Fetch = async () => {
   const GET = async (route) => {
     try {
       const response = await fetch(
-        `https://social-gather-production.up.railway.app/${route}`,
+        `${api}${route}`,
         { method: "GET", headers }
       );
       if (response.ok) {
@@ -32,7 +33,7 @@ const Fetch = async () => {
   const POSTMEDIA = async (route, formdata) => {
     try {
       const response = await fetch(
-        `https://social-gather-production.up.railway.app/${route}`,
+        `${api}${route}`,
         { method: "POST", headers: headersMultipart, body: formdata }
       );
       if (response.ok) {
@@ -46,10 +47,11 @@ const Fetch = async () => {
       return null;
     }
   };
+
   const POST = async (route, body) => {
     try {
       const response = await fetch(
-        `https://social-gather-production.up.railway.app/${route}`,
+        `${api}${route}`,
         { method: "POST", headers, body: JSON.stringify(body) }
       );
       const data = await response.json();
@@ -62,20 +64,26 @@ const Fetch = async () => {
       return null;
     }
   };
+
   const PUTMEDIA = async (route, formdata) => {
     try {
+      console.log("Bearer", headersMultipart);
       const response = await fetch(
-        `https://social-gather-production.up.railway.app/${route}`,
+        `${api}${route}`,
         { method: "PUT", headers: headersMultipart, body: formdata }
       );
+      console.log("status", route, response);
       if (response.ok) {
         const data = await response.json();
+        console.log("me", data);
         return data;
       } else {
         const data = await response.json();
+        console.log("ok",data);
         return null;
       }
     } catch (error) {
+      console.log("jf", error);
       return null;
     }
   };
@@ -83,7 +91,7 @@ const Fetch = async () => {
   const PUT = async (route, body) => {
     try {
       const response = await fetch(
-        `https://social-gather-production.up.railway.app/${route}`,
+        `${api}${route}`,
         { method: "PUT", headers, body }
       );
       if (response.ok) {
@@ -97,10 +105,11 @@ const Fetch = async () => {
       return null;
     }
   };
+
   const DELETE = async (route) => {
     try {
       const response = await fetch(
-        `https://social-gather-production.up.railway.app/${route}`,
+        `${api}${route}`,
         { method: "DELETE", headers }
       );
       const data = await response.json();
