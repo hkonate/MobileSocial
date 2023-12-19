@@ -56,18 +56,13 @@ export const getPermissionAndGetPicture = async (setSelectedPicture) => {
         }
 
         if(canUpdateProfile) {res = await fetchProfile.PUTMEDIA("profile", formData);}
-        for(const [key, value] of Object.entries(formData)){
-            console.log(key, value);
-        }
         if(profileData.user.pseudo.trim().length > 0){  
             formDataUser.append("pseudo", profileData.user.pseudo);
             resUser = await fetchProfile.PUTMEDIA("user", formDataUser);
         }
-        console.log("pro", res);
         if(res && resUser) return true;
         return null;
     } catch (error) {
-        console.log("hey", error);
         return null;
     }
 

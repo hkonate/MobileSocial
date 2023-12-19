@@ -2,21 +2,24 @@ import { React, useState, useContext } from "react";
 import {
   Text,
   View,
-  Button,
+  Image,
   TextInput,
   ActivityIndicator,
   Platform,
   StatusBar,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import Tooltip from "react-native-walkthrough-tooltip";
 import Json from "../../assets/Utils/fr.json";
 import { handleRegister } from "./Register.function";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
-
+import { Link } from "@react-navigation/native"
 export const Register = ({ states }) => {
   const [userCredentials, setUserCredentials] = useState({});
+  const [hidePwd, setHidePwd] = useState(true);
+  const [hideConfirmPwd, setHideConfirmPwd] = useState(true);
   const [showEmailTip, setEmailTip] = useState(false);
   const [showPasswordTip, setPasswordTip] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
@@ -24,21 +27,25 @@ export const Register = ({ states }) => {
   const { setUser } = states;
 
   return (
-    <View>
-      <Text>{Json.register.title}</Text>
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>{Json.register.title}</Text>
+      <View>
       <TextInput
+        style={styles.input}
         placeholder={Json.register.label_1}
         onChangeText={(text) => {
           setUserCredentials((prev) => ({ ...prev, firstname: text }));
         }}
       />
       <TextInput
+      style={styles.input}
         placeholder={Json.register.label_2}
         onChangeText={(text) => {
           setUserCredentials((prev) => ({ ...prev, lastname: text }));
         }}
       />
       <TextInput
+      style={styles.input}
         placeholder={Json.register.label_3}
         onChangeText={(text) => {
           setUserCredentials((prev) => ({ ...prev, pseudo: text }));
@@ -76,14 +83,24 @@ export const Register = ({ states }) => {
         </Tooltip>
       </View>
       <View style={styles.inputBox}>
+        {
+          hidePwd ? 
+        <TouchableOpacity onPress={()=>setHidePwd(false)} style={styles.eyes}>
+        <Image style={{width: "100%", height: "100%"}} source={require("../../assets/Images/8665352_eye_slash_icon.png")}  />
+        </TouchableOpacity> :
+        <TouchableOpacity onPress={()=>setHidePwd(true)} style={styles.eyes}>
+          <Image style={{width: "100%", height: "100%"}} source={require("../../assets/Images/8664880_eye_view_icon.png")}  />
+        </TouchableOpacity>
+        }
         <TextInput
           style={styles.input}
           placeholder={Json.login.label_3}
-          secureTextEntry={true}
+          secureTextEntry={hidePwd}
           onChangeText={(text) =>
             setUserCredentials((prev) => ({ ...prev, pwd: text }))
           }
           required={true}
+          
         />
         <Tooltip
           isVisible={showPasswordTip}
@@ -107,16 +124,29 @@ export const Register = ({ states }) => {
           </TouchableOpacity>
         </Tooltip>
       </View>
+      <View>
       <TextInput
         style={styles.input}
         placeholder={Json.register.label_6}
+        secureTextEntry={hideConfirmPwd}
         onChangeText={(text) => {
           setUserCredentials((prev) => ({ ...prev, confirmPwd: text }));
         }}
       />
+       {
+          hideConfirmPwd ? 
+        <TouchableOpacity onPress={()=>setHideConfirmPwd(false)} style={styles.eyes}>
+        <Image style={{width: "100%", height: "100%"}} source={require("../../assets/Images/8665352_eye_slash_icon.png")}  />
+        </TouchableOpacity> :
+        <TouchableOpacity onPress={()=>setHideConfirmPwd(true)} style={styles.eyes}>
+          <Image style={{width: "100%", height: "100%"}} source={require("../../assets/Images/8664880_eye_view_icon.png")}  />
+        </TouchableOpacity>
+        }
+      </View>
+      </View>
       {!isFetching ? (
-        <Button
-          title={Json.register.title}
+        <TouchableOpacity
+          style={styles.button}
           onPress={async () => {
             if (errorMessage) {
               setErrorMessage(null);
@@ -128,38 +158,97 @@ export const Register = ({ states }) => {
               setUser(res);
             }
           }}
-        />
+        >
+          <Text style={styles.textBtn}>{Json.register.title}</Text>
+          </TouchableOpacity>
       ) : (
-        <ActivityIndicator size="small" color="#0000ff" />
+        <ActivityIndicator style={styles.loading} size="meduim" color="#0000ff" />
       )}
-      {error && <Text>{Json.register[errorMessage]}</Text>}
-    </View>
+      {error && <Text style={styles.textErr}>{Json.register[errorMessage]}</Text>}
+      <View style={styles.linkContainer}>
+      <Text style={styles.account}>{Json.register.label_7}</Text>
+        <Link style={styles.link} to={{screen: Json.login.label_1}}>{Json.login.label_1}</Link>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#ecf0f1",
-    padding: 40,
+    backgroundColor: "white",
+    paddingHorizontal: 24,
+    paddingTop: 20,
   },
-  button: {
-    padding: 10,
-    borderRadius: 4,
+  title:{
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 15
   },
-  input: {
-    width: "70%",
+  input:{
+    backgroundColor: "#FAFAFA",
+    width: 240,
+    height: 45,
+    borderRadius: 16,
+    paddingLeft: 10,
+    marginBottom: 13
   },
   inputBox: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 15,
+    gap: 10,
+    position: "relative"
   },
   infoBulle: {
     width: 20,
     borderRadius: 10,
     backgroundColor: "white",
     paddingLeft: 8,
+    backgroundColor: "#FAFAFA",
+    marginBottom: 30
   },
+  button:{
+    backgroundColor: "#584CF4",
+    width: 255,
+    height: 50,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 10,
+    marginTop: 10
+  },
+  textBtn:{
+    color: "white"
+  },
+  textErr:{
+    color: "red",
+    textAlign: "center",
+    marginTop: 10
+  },
+  loading:{
+    marginTop: 10,
+  },
+  account:{
+    color: "gray",
+    textAlign: "center"
+  }, 
+  link:{
+    color: "#584CF4",
+    marginLeft: 5
+  },
+  linkContainer:{
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  eyes:{
+    position: "absolute",
+    width: 20,
+    height: 20, 
+    zIndex: 2,
+    right: 45,
+    bottom: 25
+  }
+
 });

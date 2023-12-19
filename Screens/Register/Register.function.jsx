@@ -10,7 +10,11 @@ export const handleRegister = async (userCredential, dispatch) => {
   const { firstname, lastname, pseudo, email, pwd, confirmPwd } =
     userCredential;
   //Empty input
-  for (key in userCredential) {
+  if(JSON.stringify(userCredential) === "{}") {
+    dispatch(RequestFailure());
+      return "error_1";
+  }
+  for (const key in userCredential) {
     if (!userCredential[key] || userCredential[key].trim().length === 0) {
       dispatch(RequestFailure());
       return "error_1";

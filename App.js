@@ -44,18 +44,20 @@ export default function App() {
   return (
     <RequestContextProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={Json.register.title}>
+        <Stack.Navigator initialRouteName={Json.login.label_1}>
           {!user ? (
             <>
               <Stack.Screen
-                name={Json.login.title}
+                name={Json.login.label_1}
                 options={{
                   title: null,
                 }}
               >
                 {(props) => <Login {...props} states={states} />}
               </Stack.Screen>
-              <Stack.Screen name={Json.register.title}>
+              <Stack.Screen  name={Json.register.title} options={{
+                  title: null,
+                }}>
                 {(props) => <Register {...props} states={states} />}
               </Stack.Screen>
             </>

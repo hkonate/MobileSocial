@@ -67,23 +67,18 @@ const Fetch = async () => {
 
   const PUTMEDIA = async (route, formdata) => {
     try {
-      console.log("Bearer", headersMultipart);
       const response = await fetch(
         `${api}${route}`,
         { method: "PUT", headers: headersMultipart, body: formdata }
       );
-      console.log("status", route, response);
       if (response.ok) {
         const data = await response.json();
-        console.log("me", data);
         return data;
       } else {
         const data = await response.json();
-        console.log("ok",data);
         return null;
       }
     } catch (error) {
-      console.log("jf", error);
       return null;
     }
   };
