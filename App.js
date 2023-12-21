@@ -51,23 +51,25 @@ export default function App() {
                 name={Json.login.label_1}
                 options={{
                   title: null,
+                  headerShown: false
                 }}
               >
                 {(props) => <Login {...props} states={states} />}
               </Stack.Screen>
               <Stack.Screen  name={Json.register.title} options={{
                   title: null,
+                  headerShown: false
                 }}>
                 {(props) => <Register {...props} states={states} />}
               </Stack.Screen>
             </>
-          ) : !createdProfile ? (
+          ) : (!createdProfile && !user)  ? (
             <Stack.Screen name={Json.createProfile.title}>
               {(props) => <CreateProfile {...props} states={states} />}
             </Stack.Screen>
           ) : (
             <>
-              <Stack.Screen name={Json.home.title} options={{ title: null }}>
+              <Stack.Screen name={Json.home.title} options={{ title: null, headerShown: false }}>
                 {(props) => <Home {...props} />}
               </Stack.Screen>
               <Stack.Screen name={Json.event.title} options={{ title: null }}>
@@ -96,8 +98,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "white",
+    paddingTop: 20,
   },
 });

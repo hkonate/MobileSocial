@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Button,
   Image,
-  ActivityIndicator,
 } from "react-native";
 import Json from "../../assets/Utils/fr.json";
 import { handleUpdate } from "./createProfile.function";

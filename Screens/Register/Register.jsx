@@ -184,7 +184,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 15
+    marginBottom: 30,
+    marginTop: 40
   },
   input:{
     backgroundColor: "#FAFAFA",
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 16,
     paddingLeft: 10,
-    marginBottom: 13
+    marginBottom: 20
   },
   inputBox: {
     flexDirection: "row",
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingLeft: 8,
     backgroundColor: "#FAFAFA",
-    marginBottom: 30
+    marginBottom: 22
   },
   button:{
     backgroundColor: "#584CF4",
@@ -248,7 +249,7 @@ const styles = StyleSheet.create({
     height: 20, 
     zIndex: 2,
     right: 45,
-    bottom: 25
+    bottom: 33
   }
 
 });

@@ -52,7 +52,7 @@
     "label_1": "Organisateur",
     "label_2": "A propos de",
     "label_3": "Gallerie",
-    "label_4": "Lieu",
+    "label_4": "Quel événement cherches-tu ?",
     "label_5": "Organisateur",
     "label_6": "À propos de l'événement",
     "label_7": "Plus d'événements comme celui-ci",
@@ -60,7 +60,8 @@
     "label_9": "Ne plus participer",
     "label_10": "Supprimer l'évènement",
     "label_11": "Régime alimentaires",
-    "label_12": "Modifier l'évènement"
+    "label_12": "Modifier l'évènement",
+    "label_13": "Salut 👋"
   },
   "createEvent": {
     "title": "Créer un évènement",

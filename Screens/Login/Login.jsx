@@ -18,7 +18,7 @@ import { handleSubmit } from "./Login.functions";
 import Json from "../../assets/Utils/fr.json";
 import { Link } from "@react-navigation/native"
 
-export const Login = ({ navigation }, states) => {
+export const Login = ({ navigation, states }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [hidePwd, setHidePwd] = useState(true);
@@ -104,6 +104,7 @@ export const Login = ({ navigation }, states) => {
           style={styles.button}
           onPress={async () => {
             const rep = await handleSubmit(email, password, dispatch);
+            console.log("de",rep);
             if (!rep.id) {
               setErrorMessage(rep);
             } else {
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 60,
-    marginTop: 35
+    marginTop: 80
   },
   input:{
     backgroundColor: "#FAFAFA",
