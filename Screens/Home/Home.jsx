@@ -1,26 +1,27 @@
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
 import {
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TextInput,
-  ScrollView,
-  SectionList,
-  SafeAreaView,
   TouchableOpacity,
-  Button,
-  Image
+  View
 } from "react-native";
-import Fetch from "../../assets/Utils/useFetch";
-import Json from "../../assets/Utils/fr.json";
-import { RequestContext } from "../../Context/RequestContext/RequestContext";
-import { filterEvents } from "./Home.function";
-import { SetEvents } from "../../Context/RequestContext/RequestActions";
-import { useFocusEffect } from "@react-navigation/native";
+import ButtonGroup from "../../Component/ButtonGroup";
 import Card from "../../Component/Card";
+import SmallCard from "../../Component/SmallCard";
+import { SetEvents } from "../../Context/RequestContext/RequestActions";
+import { RequestContext } from "../../Context/RequestContext/RequestContext";
+import Json from "../../assets/Utils/fr.json";
+import Fetch from "../../assets/Utils/useFetch";
+import { filterEvents } from "./Home.function";
 
 export const Home = ({ navigation }) => {
+  const [lastEvents, setLastEvents] = useState(null);
   const [events, setEvents] = useState(null);
+  const [id, setId] = useState(0)
   const { user, dispatch } = useContext(RequestContext);
   const DATA = [];
 
@@ -29,10 +30,11 @@ export const Home = ({ navigation }) => {
       const eventsRequest = async () => {
         const fetchEvents = await Fetch();
         const eventsResponse = await fetchEvents.GET("event");
-        console.log(eventsResponse);
         if (eventsResponse !== undefined) {
           dispatch(SetEvents(eventsResponse));
-          setEvents(eventsResponse);
+          setLastEvents(eventsResponse.filter((ele, idx) => idx < 5));
+          setEvents(eventsResponse)
+          setId(0)
         }
       };
       eventsRequest();
@@ -57,11 +59,11 @@ export const Home = ({ navigation }) => {
     );
   }
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.userInfosBox}>
-        <View style={styles.avatarBox}>
+        <TouchableOpacity onPress={()=> navigation.navigate(Json.profile.title)} style={styles.avatarBox}>
           <Text style={styles.initial}>{user?.firstname[0]?.toUpperCase() + user?.lastname[0]?.toUpperCase()}</Text>
-        </View>
+        </TouchableOpacity>
         <View style={styles.welcomeBox}>
           <Text style={styles.welcomeText}>{Json.event.label_13}</Text>
           <Text style={styles.textName}>{user.firstname + " " + user.lastname}</Text>
@@ -73,34 +75,24 @@ export const Home = ({ navigation }) => {
         <TextInput style={styles.input} placeholder={Json.event.label_4} />
         <Image style={styles.loupe} source={require("../../assets/Images/filter.png")} />
       </View>
-      <ScrollView horizontal={true} style={styles.carousel}>
+      <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.carousel}>
        {
-          events && events.map((event, idx) =>  <Card key={idx} w={250} h={340} event={event} />)
+         lastEvents && lastEvents?.length > 0 ? lastEvents.map((event, idx) =>  <Card key={idx} w={250} h={340} event={event} navigation={navigation} />) :
+         <View style={{ alignItems: "center", width: 300}}>
+           <Text style={styles.noEvent}>{Json.home.label_6}</Text>
+         </View>
        }
       </ScrollView>
-      <Button
-        title={Json.createEvent.title}
-        onPress={() => navigation.navigate(Json.createEvent.title)}
-      />
-      <Button
-        title="Profil"
-        onPress={() => navigation.navigate(Json.profile.title)}
-      />
-      <SectionList
-        sections={DATA}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.item}
-            onPress={() => navigation.navigate(Json.event.title, item)}
-          >
-            <Text style={styles.title}>{item.title}</Text>
-          </TouchableOpacity>
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.header}>{title}</Text>
-        )}
-      />
+      <Text style={styles.categoryTitle}>Categories</Text>
+      <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.categoryCarousel}>
+        <ButtonGroup id={id} setId={setId} buttons={["Tout", "Cinéma", "Arts", "Etudes", "Concerts", "Sports", "Karaoke", "Restaurants", "Jeux", "Autres"]} setEvents={setEvents} />
+      </ScrollView>
+      <View style={styles.categorizeEventBox}>
+       {
+        events && events?.length > 0 ? events.map((event, idx) => <SmallCard  key={idx} event={event} navigation={navigation}/>) :
+        <Text style={styles.noEvent}>{Json.home.label_6}</Text>
+       }
+      </View>
     </ScrollView>
   );
 };
@@ -109,7 +101,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "lightgrey",
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     paddingTop: 50,
   },
   userInfosBox:{
@@ -174,7 +166,28 @@ const styles = StyleSheet.create({
   },
   carousel:{
     width: "100%",
-    height: 450,
-    marginBottom: 50,
+    marginBottom: 25,
   },
+  categoryTitle:{
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  categoryCarousel:{
+    marginBottom: 25
+  },
+  categorizeEventBox:{
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    gap: 15,
+    marginBottom: 80
+  },
+  noEvent:{
+    fontSize: 24,
+    marginTop: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#584CF4"
+  }
 });

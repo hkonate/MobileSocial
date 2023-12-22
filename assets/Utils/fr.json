@@ -45,7 +45,8 @@
     "label_2": "À proximité de vous",
     "label_3": "Bonjour",
     "label_4": "Quel événement recherchez-vous?",
-    "label_5": "Évènements"
+    "label_5": "Évènements",
+    "label_6": "PAS D'ÉVÈNEMENTS"
   },
   "event": {
     "title": "Event",

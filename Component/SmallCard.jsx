@@ -9,7 +9,7 @@ import studyImage from '../assets/Images/STUDY.jpg';
 import artImage from '../assets/Images/ART.jpg';
 import othersImage from '../assets/Images/OTHERS.jpg';
 import Json from "../assets/Utils/fr.json"
-const Card = ({w,h, event, navigation}) =>{
+const SmallCard = ({ event, navigation}) =>{
     const dateActuelle = new Date(event.schedule)
     const options = {
         weekday: 'short',
@@ -56,59 +56,59 @@ const Card = ({w,h, event, navigation}) =>{
     const capitalizedDate = dateFormatee.replace(/(?:^|\s)(?!à)([^\s])/g, (match) => match.toUpperCase());
 
 
-    return  <TouchableOpacity onPress={()=> navigation.navigate(Json.event.title, event)} style={{width: w, height: h, ...styles.card}}> 
+    return  <TouchableOpacity onPress={()=> navigation.navigate(Json.event.title, event)} style={styles.card}> 
         <Image style={styles.image} source={imageSource}/>
         <Text numberOfLines={1} style={styles.title}>{(event.title[0].toUpperCase() + event.title.slice(1)).trim()}</Text>
-        <Text  numberOfLines={1} style={styles.date}>{capitalizedDate.trim()}</Text>
+        <Text numberOfLines={2} style={styles.date}>{capitalizedDate}</Text>
         <View style={styles.locationBox}>
             <Image style={styles.locationLogo} source={require("../assets/Images/location.png")}/>
-            <Text numberOfLines={1} style={styles.place}>{event.address.trim()}</Text>
+            <Text numberOfLines={1} style={styles.place}>{event.address}</Text>
         </View>
     </TouchableOpacity>
     
     
 }
 
-export default Card;
+export default SmallCard;
 
 const styles = StyleSheet.create({
     card:{
         backgroundColor: "white",
-        borderRadius: 30,
-        padding: 10,
-        marginRight: 25
+        borderRadius: 20,
+        padding: 5,
+        overflow: "hidden",
+        width: "47%",
+        height: 190,
+        gap: 4
     },
     image:{
         width: "100%",
         height: "60%",
-        borderRadius: 25,
-        marginBottom: 15,
+        borderRadius: 20,
         objectFit: "cover"
     },
     title:{
-        fontSize: 18,
+        fontSize: 10,
         fontWeight: "bold",
-        marginBottom: 10
+        width: "100%", 
     },
     date:{
-        fontSize: 14,
+        fontSize: 10,
         color: "#584CF4",
         fontWeight: "bold",
-        marginBottom: 18
     },
     locationBox:{
         flexDirection: "row",
         alignItems: "center",
-        paddingRight: 10,
-        width: "94%"
+        width: "100%"
     },
     place:{
-        fontSize: 14,
+        fontSize: 8,
         flexWrap: "wrap"
     },
     locationLogo:{
-        width: 20,
-        height: 20,
-        marginRight: 10
+        width: 12,
+        height: 12,
+        marginRight: 2
     }
 })
