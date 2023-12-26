@@ -62,7 +62,9 @@
     "label_10": "Supprimer l'évènement",
     "label_11": "Régime alimentaires",
     "label_12": "Modifier l'évènement",
-    "label_13": "Salut 👋"
+    "label_13": "Salut 👋",
+    "label_14": "Filtre",
+    "label_15": "Catégorie d'événement"
   },
   "createEvent": {
     "title": "Créer un évènement",
@@ -102,5 +104,8 @@
     "label_2": "hobbies",
     "label_3": "picture",
     "label_4": "pseudo"
+  },
+  "filter":{
+    "title": "Filtre"
   }
 }

@@ -14,6 +14,7 @@ import EditEvent from "./Screens/EditEvent/EditEvent";
 import CreateEvent from "./Screens/CreateEvent/CreateEvent";
 import Profile from "./Screens/Profile/Profile";
 import EditProfile from "./Screens/EditProfile/EditProfile";
+import Filter from "./Screens/Filter/Filter";
 
 const Stack = createNativeStackNavigator();
 
@@ -86,6 +87,9 @@ export default function App() {
               </Stack.Screen>
               <Stack.Screen name={Json.editProfile.title}>
                 {(props) => <EditProfile {...props} />}
+              </Stack.Screen>
+              <Stack.Screen name={Json.filter.title}>
+                {(props) => <Filter {...props} />}
               </Stack.Screen>
             </>
           )}

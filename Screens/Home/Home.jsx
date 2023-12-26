@@ -7,8 +7,12 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  Modal,
+  Pressable
 } from "react-native";
+import Slider from "react-native-a11y-slider";
+import SelectMultiple from 'react-native-select-multiple'
 import ButtonGroup from "../../Component/ButtonGroup";
 import Card from "../../Component/Card";
 import SmallCard from "../../Component/SmallCard";
@@ -16,15 +20,35 @@ import { SetEvents } from "../../Context/RequestContext/RequestActions";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
 import Json from "../../assets/Utils/fr.json";
 import Fetch from "../../assets/Utils/useFetch";
+import CLOSE from "../../assets/Images/close.png"
 import { filterEvents } from "./Home.function";
 
 export const Home = ({ navigation }) => {
   const [lastEvents, setLastEvents] = useState(null);
   const [events, setEvents] = useState(null);
+  const [inclusiveArr, setInclusiveArr] = useState([])
+  const [modalVisible, setModalVisible] = useState(false);
+  const [rangePrice, setRangePrice] = useState([0, 1000])
   const [id, setId] = useState(0)
   const { user, dispatch } = useContext(RequestContext);
   const DATA = [];
+  const inclusive = ["HALAL", "VEGAN", "VEGE", "STANDARD", "CASHER"]
+  const categoryArr = ["", "MOVIE", "ART", "STUDY", "CONCERT", "SPORT", "KARAOKE", "RESTAURANT", "GAMING", "OTHERS"]
 
+ 
+
+ onSelectionsChange = (selectedItems, item) => {
+    setInclusiveArr(prev => {
+      const index = prev.findIndex((typeOfFood) => typeOfFood === item.value);
+      if (index !== -1) {
+        prev.splice(index, 1);
+      } else {
+        return [...prev, item.value];
+      }
+      return [...prev];
+    });
+  }
+  console.log("state",rangePrice, inclusiveArr, categoryArr[id]);
   useFocusEffect(
     React.useCallback(() => {
       const eventsRequest = async () => {
@@ -73,8 +97,46 @@ export const Home = ({ navigation }) => {
       <View style={styles.searchBox}>
         <Image style={styles.loupe} source={require("../../assets/Images/loupe.png")} />
         <TextInput style={styles.input} placeholder={Json.event.label_4} />
+        <TouchableOpacity onPress={()=>setModalVisible(true)}>
         <Image style={styles.loupe} source={require("../../assets/Images/filter.png")} />
+        </TouchableOpacity>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{Json.event.label_14}</Text>
+            <TouchableOpacity  onPress={() => setModalVisible(!modalVisible)} style={styles.closeModal}><Image source={CLOSE} /></TouchableOpacity>
+            <View style={styles.underline}></View>
+            <Text style={styles.subtitleModal}>{Json.event.label_15}</Text>
+            <View style={styles.modalBtnGrp}>
+            <ButtonGroup id={id} setId={setId} buttons={categoryArr} setEvents={setEvents} modal={true} />
+            </View>
+            <Text style={styles.subtitleModal}>{"Prix"}</Text>
+            <Slider min={0} max={1000} values={rangePrice} markerColor='#2196F3' onChange={values=> setRangePrice(values)} />
+            <Text style={styles.subtitleModal}>{Json.event.label_11}</Text>
+            <SelectMultiple 
+            items={inclusive}
+            selectedItems={inclusiveArr}
+            onSelectionsChange={onSelectionsChange}
+            />
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {
+                setModalVisible(!modalVisible)
+                navigation.navigate(Json.filter.title, {rangePrice, inclusiveArr, category: categoryArr[id]})
+                }}>
+              <Text style={styles.textStyle}>Filtrer</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.carousel}>
        {
          lastEvents && lastEvents?.length > 0 ? lastEvents.map((event, idx) =>  <Card key={idx} w={250} h={340} event={event} navigation={navigation} />) :
@@ -85,7 +147,7 @@ export const Home = ({ navigation }) => {
       </ScrollView>
       <Text style={styles.categoryTitle}>Categories</Text>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.categoryCarousel}>
-        <ButtonGroup id={id} setId={setId} buttons={["Tout", "Cinéma", "Arts", "Etudes", "Concerts", "Sports", "Karaoke", "Restaurants", "Jeux", "Autres"]} setEvents={setEvents} />
+        <ButtonGroup id={id} setId={setId} buttons={categoryArr} setEvents={setEvents} modal={false} />
       </ScrollView>
       <View style={styles.categorizeEventBox}>
        {
@@ -128,7 +190,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: "red",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   initial:{
     color: "white"
@@ -189,5 +251,53 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     color: "#584CF4"
+  },  
+  modalView: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: 'white',
+    borderRadius: 40,
+    padding: 10,
+    elevation: 5,
+    position: "relative"
+  },
+  underline:{
+    borderBottomWidth: 1,
+    borderColor: "lightgrey",
+    marginBottom: 10,
+  },
+  subtitleModal:{
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10
+  },
+  modalBtnGrp:{
+    flexDirection: "row",
+    flexWrap: "wrap", 
+    gap: 8,
+    marginBottom: 20
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 10,
+    textAlign: 'center',
+    fontWeight: "bold"
+  },
+  closeModal:{
+    position: "absolute",
+    right: "10%",
+    top: "2%"
   }
 });

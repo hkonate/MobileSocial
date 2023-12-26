@@ -10,63 +10,66 @@ import articon from '../assets/Images/articon.png';
 import valideicon from "../assets/Images/validateicon.png"
 import othersicon from '../assets/Images/othersicon.png';
 import { handleFetchByCat } from "../Screens/Home/Home.function";
-const ButtonGroup = ({id, setId,buttons, setEvents}) => {
+const ButtonGroup = ({id, setId,buttons, setEvents, modal}) => {
     return buttons.map((button, idx) => 
     { 
         let icon, txt;
         switch (button){
-            case "Tout":
+            case "":
                 icon = valideicon;
-                txt= "";
+                txt= "Tout";
                 break;
-            case "Cinéma":
+            case "MOVIE":
                 icon = movieicon
-                txt = "MOVIE"
+                txt = "Cinéma"
                 break;
-            case "Arts":
+            case "ART":
                 icon = articon;
-                txt = "ART"
+                txt = "Arts"
                 break;
-            case "Etudes":
+            case "STUDY":
                 icon = studyicon;
-                txt = "STUDY"
+                txt ="Etudes"
                 break;
-            case "Concerts":
+            case "CONCERT":
                 icon = concerticon;
-                txt = "CONCERT"
+                txt = "Concerts"
                 break;
-            case "Karaoke":
+            case "KARAOKE":
                 icon = karaokeicon;
-                txt = "KARAOKE"
+                txt = "Karaoke"
                 break;
-            case "Restaurants":
+            case "RESTAURANT":
                 icon = restauranticon;
-                txt = "RESTAURANT"
+                txt = "Restaurants"
                 break;
-            case  "Jeux":
+            case  "GAMING":
                 icon = gamingicon;
-                txt = "GAMING"
+                txt = "Jeux"
                 break
-            case "Sports":
+            case "SPORT":
                 icon = sporticon;
-                txt = "SPORT"
+                txt = "Sports"
                 break;
             default: 
             icon = othersicon;
-            txt = "OTHERS"
+            txt = "Autres"
             break;
         }
         return <TouchableOpacity onPress={async ()=>
             {
                 setId(idx)
-                const res = await handleFetchByCat(txt)
-                setEvents(res)
+                if(!modal){
+                    console.log("fetch");
+                    const res = await handleFetchByCat(button)
+                    setEvents(res)
+                }
             }} 
             key={idx} 
-            title={button}
+            title={txt}
             style={{backgroundColor: id === idx ? "#584CF4" : "white",...styles.button}}>
             <Image style={styles.icon} source={icon} />
-            <Text style={{color: id === idx ? "white" : "#584CF4",...styles.textBtn}}>{button}</Text>
+            <Text style={{color: id === idx ? "white" : "#584CF4",...styles.textBtn}}>{txt}</Text>
             </TouchableOpacity>
             }
     )
