@@ -57,7 +57,14 @@ const SmallCard = ({ event, navigation}) =>{
 
 
     return  <TouchableOpacity onPress={()=> navigation.navigate(Json.event.title, event)} style={styles.card}> 
+        <View style={{width: "100%", height: "60%", position: "relative"}}>
         <Image style={styles.image} source={imageSource}/>
+        {
+        event.price === 0 && <View style={styles.free}>
+            <Text style={styles.freeText}>{Json.filter.label_3}</Text>
+            </View>
+    }
+        </View>
         <Text numberOfLines={1} style={styles.title}>{(event.title[0].toUpperCase() + event.title.slice(1)).trim()}</Text>
         <Text numberOfLines={2} style={styles.date}>{capitalizedDate}</Text>
         <View style={styles.locationBox}>
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
     },
     image:{
         width: "100%",
-        height: "60%",
+        height: "100%",
         borderRadius: 20,
         objectFit: "cover"
     },
@@ -110,5 +117,21 @@ const styles = StyleSheet.create({
         width: 12,
         height: 12,
         marginRight: 2
-    }
+    },
+    free:{
+        backgroundColor: "#584CF4",
+        width: "38%",
+        height: "22%",
+        borderRadius: 6,
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        right: 7,
+        top: 10
+    },
+    freeText:{
+        fontSize: 8,
+        color: "white",
+        fontWeight: "bold"
+    },
 })
