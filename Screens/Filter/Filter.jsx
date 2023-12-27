@@ -5,7 +5,7 @@ import Search from "../../Component/Search.jsx"
 import { HandleEventFilter } from './Filter.function.jsx'
 import Json from "../../assets/Utils/fr.json"
 import Modal from '../../Component/ModalC.jsx'
-
+import RectangularCard from '../../Component/RectangularCard.jsx'
 
 const Filter = ({route, navigation}) => {
   const filters = route.params
@@ -14,7 +14,7 @@ const Filter = ({route, navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [id, setId] = useState(filters.id)
   const [rangePrice, setRangePrice] = useState(filters.rangePrice);
-  const [eventName, setEventName] = useState(filters.eventName)
+  const [eventName, setEventName] = useState("")
   useEffect(()=>{
     const categoryArr = ["", "MOVIE", "ART", "STUDY", "CONCERT", "SPORT", "KARAOKE", "RESTAURANT", "GAMING", "OTHERS"]
     const fetchByFilter = async ()=>{
@@ -33,7 +33,8 @@ const Filter = ({route, navigation}) => {
           <Search setModalVisible={setModalVisible} setEventName={setEventName} rangePrice={rangePrice} inclusiveArr={inclusiveArr} id={id} navigation={navigation} eventName={eventName} filter={true} setEvents={setEvents} />
         </View>
       </View>
-      <Text>{events && (events.length > 1 ? `${events.length} ${Json.filter.label_1}` : `${events.length} ${Json.filter.label_2}`)}</Text>
+      <Text style={styles.findText}>{events && (events.length > 1 ? `${events.length} ${Json.filter.label_1}` : `${events.length} ${Json.filter.label_2}`)}</Text>
+      <RectangularCard events={events} navigation={navigation} />
       <Modal setModalVisible={setModalVisible} modalVisible={modalVisible} rangePrice={rangePrice} inclusiveArr={inclusiveArr} id={id} eventName={eventName} navigation={navigation} setRangePrice={setRangePrice} setId={setId} setEvents={setEvents} filter={true} setInclusiveArr={setInclusiveArr}/>
     </ScrollView>
   )
@@ -58,5 +59,11 @@ const styles = StyleSheet.create({
   image:{
     width: "100%",
     height: 20
+  },
+  findText:{
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 25
   }
 })
