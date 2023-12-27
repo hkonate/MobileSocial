@@ -9,7 +9,7 @@ import studyImage from '../assets/Images/STUDY.jpg';
 import artImage from '../assets/Images/ART.jpg';
 import othersImage from '../assets/Images/OTHERS.jpg';
 import Json from "../assets/Utils/fr.json"
-const Card = ({w,h, event, navigation}) =>{
+const Card = ({event, navigation}) =>{
     const dateActuelle = new Date(event.schedule)
     const options = {
         weekday: 'short',
@@ -48,15 +48,12 @@ const Card = ({w,h, event, navigation}) =>{
             imageSource = othersImage;
             break;
         default:
-            // Default image for unspecified categories
             imageSource = defaultImage;
             break;
     }
     const dateFormatee = new Intl.DateTimeFormat('fr-FR', options).format(dateActuelle);
     const capitalizedDate = dateFormatee.replace(/(?:^|\s)(?!à)([^\s])/g, (match) => match.toUpperCase());
-
-
-    return  <TouchableOpacity onPress={()=> navigation.navigate(Json.event.title, event)} style={{width: w, height: h, ...styles.card}}> 
+    return  <TouchableOpacity onPress={()=> navigation.navigate(Json.event.title, event)} style={styles.card}> 
         <Image style={styles.image} source={imageSource}/>
         <Text numberOfLines={1} style={styles.title}>{(event.title[0].toUpperCase() + event.title.slice(1)).trim()}</Text>
         <Text  numberOfLines={1} style={styles.date}>{capitalizedDate.trim()}</Text>
@@ -65,8 +62,6 @@ const Card = ({w,h, event, navigation}) =>{
             <Text numberOfLines={1} style={styles.place}>{event.address.trim()}</Text>
         </View>
     </TouchableOpacity>
-    
-    
 }
 
 export default Card;
@@ -76,7 +71,9 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 30,
         padding: 10,
-        marginRight: 25
+        marginRight: 25,
+        width: 250,
+        height: 340
     },
     image:{
         width: "100%",

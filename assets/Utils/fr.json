@@ -46,7 +46,9 @@
     "label_3": "Bonjour",
     "label_4": "Quel événement recherchez-vous?",
     "label_5": "Évènements",
-    "label_6": "PAS D'ÉVÈNEMENTS"
+    "label_6": "PAS D'ÉVÈNEMENTS",
+    "label_7": "Prix",
+    "label_8": "Catégories"
   },
   "event": {
     "title": "Event",
@@ -65,6 +67,7 @@
     "label_13": "Salut 👋",
     "label_14": "Filtre",
     "label_15": "Catégorie d'événement"
+    
   },
   "createEvent": {
     "title": "Créer un évènement",
@@ -106,6 +109,8 @@
     "label_4": "pseudo"
   },
   "filter":{
-    "title": "Filtre"
+    "title": "Filtre",
+    "label_1": "Trouvés",
+    "label_2": "Trouvé"
   }
 }

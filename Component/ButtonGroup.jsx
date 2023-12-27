@@ -60,7 +60,6 @@ const ButtonGroup = ({id, setId,buttons, setEvents, modal}) => {
             {
                 setId(idx)
                 if(!modal){
-                    console.log("fetch");
                     const res = await handleFetchByCat(button)
                     setEvents(res)
                 }
@@ -74,7 +73,6 @@ const ButtonGroup = ({id, setId,buttons, setEvents, modal}) => {
             }
     )
 }
-
 export default ButtonGroup
 
 const styles = StyleSheet.create({
