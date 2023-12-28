@@ -6,14 +6,18 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  Dimensions
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
 import Json from "../../assets/Utils/fr.json";
 import { handleAttendee, handleDelete } from "./Event.functions";
 import { SetEvent } from "../../Context/RequestContext/RequestActions";
 import { useFocusEffect } from "@react-navigation/native";
 import Fetch from "../../assets/Utils/useFetch";
+import Back from "../../assets/Images/back.png"
+import { SwiperFlatList } from 'react-native-swiper-flatlist';
+
 const Event = ({ route, navigation: { goBack, navigate, push } }) => {
   const [event, setEvent] = useState(null);
   const { events, user, dispatch } = useContext(RequestContext);
@@ -51,7 +55,27 @@ const Event = ({ route, navigation: { goBack, navigate, push } }) => {
     : Json.event.label_8;
   const date = new Date(event?.schedule).toString().split("(").pop();
   return (
-    <ScrollView>
+    <ScrollView style={styles.constainer}>
+      <View style={styles.carousselBox}>
+        <TouchableOpacity style={styles.leftArrowBox} onPress={()=> goBack()}>
+          <Image style={styles.leftArrowLogo} source={Back} />
+        </TouchableOpacity>
+       { 
+       event?.images.length > 0 ? 
+       <SwiperFlatList
+       autoplay
+       autoplayDelay={2}
+       autoplayLoop
+       showPagination
+       paginationDefaultColor="white"
+       paginationActiveColor="#584CF4"
+       data={event.images}
+       renderItem={({ item }) =>  <Image style={styles.images} source={{uri: item}}/>}
+     />
+       :
+        <Text style={styles.noEvent}>Pas de photos</Text>
+        }
+      </View>
       <Text>{event?.title}</Text>
       <Text>{event?.images.length}</Text>
       <View>
@@ -136,5 +160,40 @@ const Event = ({ route, navigation: { goBack, navigate, push } }) => {
 };
 
 export default Event;
-
-const styles = StyleSheet.create({});
+const width = Dimensions.get('window').width;
+const styles = StyleSheet.create({
+  
+  constainer: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  carousselBox:{
+    backgroundColor: "lightgrey",
+    height: "50%",
+    width:"100%",
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  images:{
+    width,
+    height: "100%",
+  },
+  leftArrowBox:{
+    width: 30,
+    height: 30,
+    position: "absolute",
+    top: 15,
+    left: 10
+  },
+  leftArrowLogo:{
+    width: "100%",
+    height: "100%",
+    objectFit: "contain"
+  },
+  noEvent:{
+    fontSize: 20,
+    fontWeight: "bold",
+    textTransform: "uppercase"
+  }
+});

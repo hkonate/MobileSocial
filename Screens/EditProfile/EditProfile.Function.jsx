@@ -60,8 +60,8 @@ export const getPermissionAndGetPicture = async (setSelectedPicture) => {
             formDataUser.append("pseudo", profileData.user.pseudo);
             resUser = await fetchProfile.PUTMEDIA("user", formDataUser);
         }
-        if(res && resUser) return true;
-        return null;
+        if(!res && !resUser) return null;
+        return true;
     } catch (error) {
         return null;
     }
