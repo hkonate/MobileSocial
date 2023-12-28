@@ -59,14 +59,16 @@
     "label_5": "Organisateur",
     "label_6": "À propos de l'événement",
     "label_7": "Plus d'événements comme celui-ci",
-    "label_8": "Participer",
-    "label_9": "Ne plus participer",
+    "label_8": "Joindre",
+    "label_9": "Quitter",
     "label_10": "Supprimer l'évènement",
     "label_11": "Régime alimentaires",
     "label_12": "Modifier l'évènement",
     "label_13": "Salut 👋",
     "label_14": "Filtre",
-    "label_15": "Catégorie d'événement"
+    "label_15": "Catégorie d'événement",
+    "label_16": "participants",
+    "label_17": "participant"
     
   },
   "createEvent": {

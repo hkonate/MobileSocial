@@ -4,7 +4,7 @@ export const handleAttendee = async (attend, eventId) => {
   try {
     const fetch = await Fetch();
     const response = await fetch.PUT(
-      `event/${eventId}/${attend === "Participer"}`
+      `event/${eventId}/${attend === "Joindre"}`
     );
     if (response) return response;
     return null;

@@ -9,16 +9,10 @@ import studyImage from '../assets/Images/STUDY.jpg';
 import artImage from '../assets/Images/ART.jpg';
 import othersImage from '../assets/Images/OTHERS.jpg';
 import Json from "../assets/Utils/fr.json"
+import { FormatDate } from "../assets/Utils/formatDate";
 const Card = ({event, navigation}) =>{
-    const dateActuelle = new Date(event.schedule)
-    const options = {
-        weekday: 'short',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-    };
+    const capitalizedDate = FormatDate(event?.schedule)
+    let imageSource
     switch (event.category) {
         case 'CONCERT':
             imageSource = concertImage;
@@ -51,8 +45,6 @@ const Card = ({event, navigation}) =>{
             imageSource = defaultImage;
             break;
     }
-    const dateFormatee = new Intl.DateTimeFormat('fr-FR', options).format(dateActuelle);
-    const capitalizedDate = dateFormatee.replace(/(?:^|\s)(?!à)([^\s])/g, (match) => match.toUpperCase());
     return  <TouchableOpacity onPress={()=> navigation.navigate(Json.event.title, event)} style={styles.card}>
         <View style={{width: "100%", height: "60%", position: "relative", marginBottom: 15}}>
         <Image style={styles.image} source={imageSource}/>

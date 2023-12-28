@@ -15,11 +15,15 @@ import { handleAttendee, handleDelete } from "./Event.functions";
 import { SetEvent } from "../../Context/RequestContext/RequestActions";
 import { useFocusEffect } from "@react-navigation/native";
 import Fetch from "../../assets/Utils/useFetch";
-import Back from "../../assets/Images/back.png"
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
+import Location from "../../assets/Images/location.png"
+import Calendar from "../../assets/Images/calendar.png"
+import { FormatDate } from "../../assets/Utils/formatDate";
+
 
 const Event = ({ route, navigation: { goBack, navigate, push } }) => {
   const [event, setEvent] = useState(null);
+  const [date, setDate] = useState(null)
   const { events, user, dispatch } = useContext(RequestContext);
   useFocusEffect(
     React.useCallback(() => {
@@ -35,6 +39,7 @@ const Event = ({ route, navigation: { goBack, navigate, push } }) => {
           );
         }
         setEvent(res);
+        setDate(FormatDate(res.schedule))
       };
       fetchEvent();
     }, [])
@@ -53,15 +58,12 @@ const Event = ({ route, navigation: { goBack, navigate, push } }) => {
   )
     ? Json.event.label_9
     : Json.event.label_8;
-  const date = new Date(event?.schedule).toString().split("(").pop();
+    console.log(event?.schedule);
   return (
-    <ScrollView style={styles.constainer}>
+    <ScrollView style={styles.container}>
+      { 
+       event?.images.length > 0 &&
       <View style={styles.carousselBox}>
-        <TouchableOpacity style={styles.leftArrowBox} onPress={()=> goBack()}>
-          <Image style={styles.leftArrowLogo} source={Back} />
-        </TouchableOpacity>
-       { 
-       event?.images.length > 0 ? 
        <SwiperFlatList
        autoplay
        autoplayDelay={2}
@@ -72,34 +74,43 @@ const Event = ({ route, navigation: { goBack, navigate, push } }) => {
        data={event.images}
        renderItem={({ item }) =>  <Image style={styles.images} source={{uri: item}}/>}
      />
-       :
-        <Text style={styles.noEvent}>Pas de photos</Text>
-        }
       </View>
-      <Text>{event?.title}</Text>
-      <Text>{event?.images.length}</Text>
-      <View>
-        <Text>{event?.listOfAttendees.length}</Text>
-        <Button
-          title={titleBtn}
-          onPress={async () => {
+        }
+        <View style={{width: "100%", paddingHorizontal: 10, marginTop: 20}}>
+      <Text style={styles.title}>{event?.title}</Text>
+      <View style={styles.attendeeBox}>
+        <View style={styles.category}>
+          <Text style={styles.categoryTxt}>{event?.category}</Text>
+        </View>
+        <Text>{`Il y a ${event?.listOfAttendees?.length} ${event?.listOfAttendees?.length > 1 ? Json.event.label_16 :  Json.event.label_17}`}</Text>
+       {event?.creator.id !== user.id && <TouchableOpacity
+         style={{backgroundColor: titleBtn === "Quitter" ? "red" : "#584CF4", ...styles.attendBtn}}  
+         onPress={async () => {
             const data = await handleAttendee(titleBtn, event?.id);
             if (data) {
               dispatch(SetEvent(data));
               setEvent(data);
             }
-          }}
-        />
+          }}>
+          <Text style={{color: titleBtn === "Joindre" && "white", ...styles.attendBtnTxt}}>{titleBtn}</Text>
+        </TouchableOpacity>}
       </View>
-      <View>
-        <View></View>
-        <Text>{date}</Text>
+      <View style={styles.underline}>
       </View>
-      <View>
-        <View></View>
-        <Text>{event?.address}</Text>
+      <View style={styles.locationBox}>
+        <View style={styles.locationLogoBox}>
+          <Image style={styles.locationLogo} source={Calendar}/>
+        </View>
+        <Text style={styles.locationTxt}>{date}</Text>
       </View>
-      <View>
+      <View style={styles.locationBox}>
+        <View style={styles.locationLogoBox}>
+        <Image style={styles.locationLogo} source={Location}/>
+        </View>
+        <Text style={styles.locationTxt}>{event?.address}</Text>
+      </View>
+      <View style={styles.underline}></View>
+      
         <View>
           <View
             style={{
@@ -163,17 +174,18 @@ export default Event;
 const width = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   
-  constainer: {
+  container: {
     flex: 1,
     backgroundColor: "white",
+    flexDirection: "column"
   },
   carousselBox:{
     backgroundColor: "lightgrey",
-    height: "50%",
+    height: 300,
     width:"100%",
     position: "relative",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   images:{
     width,
@@ -184,7 +196,7 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
     top: 15,
-    left: 10
+    left: 10,
   },
   leftArrowLogo:{
     width: "100%",
@@ -195,5 +207,78 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textTransform: "uppercase"
+  },
+  title:{
+    fontSize: 20,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+  attendeeBox:{
+    flexDirection: "row",
+    alignItems: "center",
+    height: 50,
+    width: "100%",
+    gap: 10,
+    marginBottom: 15
+  },
+  category:{
+    height: "50%",
+    borderWidth: 1,
+    borderColor: "#584CF4",
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 8,
+    borderRadius: 5
+   
+  },
+  categoryTxt:{
+    color: "#584CF4",
+    textAlign: "center",
+    fontSize: 9,
+    textTransform: "capitalize"
+  },
+  attendBtn:{
+    paddingHorizontal: 10,
+    height: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    marginLeft: 30
+  },
+  attendBtnTxt:{
+    fontWeight: "bold",
+    textTransform: "capitalize",
+    fontSize: 12
+  },
+  underline:{
+    width: "100%",
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgrey",
+    marginBottom: 15
+  },
+  locationBox:{
+    width: "100%",
+    marginBottom: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  locationLogoBox:{
+    width: 40,
+    height: 40,
+    borderRadius: 25,
+    backgroundColor: "#f2f2f2",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  locationLogo:{
+    width: 20,
+    height: 20,
+  },
+  locationTxt:{
+    fontSize: 12,
+    fontWeight: "bold",
+    textAlign: "center"
   }
 });
