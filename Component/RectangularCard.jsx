@@ -12,9 +12,11 @@ import othersImage from '../assets/Images/OTHERS.jpg';
 import Json from "../assets/Utils/fr.json"
 
 const RectangularCard = ({events, navigation}) => {
+   
   return (
-    events && events.map(event =>{
+    events && events.map((event, idx) =>{
         const dateActuelle = new Date(event.schedule)
+        const currentDate = new Date()
     const options = {
         weekday: 'short',
         day: 'numeric',
@@ -57,7 +59,7 @@ const RectangularCard = ({events, navigation}) => {
     }
     const dateFormatee = new Intl.DateTimeFormat('fr-FR', options).format(dateActuelle);
     const capitalizedDate = dateFormatee.replace(/(?:^|\s)(?!à)([^\s])/g, (match) => match.toUpperCase());
-        return <TouchableOpacity onPress={()=>navigation.navigate(Json.event.title, event)} style={styles.container}>
+        return <TouchableOpacity key={idx} onPress={()=> currentDate < dateActuelle && navigation.navigate(Json.event.title, event)} style={styles.container}>
     <View style={styles.left}>
         <Image style={styles.image} source={imageSource}/>
     {
