@@ -104,11 +104,12 @@
     "label_10": "Événts. vécus"
   },
   "editProfile": {
-    "title": "Editer le profil",
+    "title": "Éditer le profil",
     "label_1": "bio",
     "label_2": "hobbies",
     "label_3": "picture",
-    "label_4": "pseudo"
+    "label_4": "pseudo",
+    "label_5": "modifier"
   },
   "filter":{
     "title": "Filtre",

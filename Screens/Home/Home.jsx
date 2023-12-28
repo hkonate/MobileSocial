@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image
 } from "react-native";
 import ButtonGroup from "../../Component/ButtonGroup";
 import Card from "../../Component/Card";
@@ -28,7 +29,6 @@ export const Home = ({ navigation }) => {
   const { user, dispatch } = useContext(RequestContext);
   const categoryArr = ["", "MOVIE", "ART", "STUDY", "CONCERT", "SPORT", "KARAOKE", "RESTAURANT", "GAMING", "OTHERS"]
 
-  console.log("state",rangePrice, inclusiveArr, categoryArr[id]);
   useFocusEffect(
     React.useCallback(() => {
       const eventsRequest = async () => {
@@ -56,7 +56,8 @@ export const Home = ({ navigation }) => {
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.userInfosBox}>
         <TouchableOpacity onPress={()=> navigation.navigate(Json.profile.title)} style={styles.avatarBox}>
-          <Text style={styles.initial}>{user?.firstname[0]?.toUpperCase() + user?.lastname[0]?.toUpperCase()}</Text>
+         {user?.profile?.picture? <Image source={{uri: user.profile.picture}} />:
+          <Text style={styles.initial}>{user?.firstname[0]?.toUpperCase() + user?.lastname[0]?.toUpperCase()}</Text>}
         </TouchableOpacity>
         <View style={styles.welcomeBox}>
           <Text style={styles.welcomeText}>{Json.event.label_13}</Text>
@@ -119,6 +120,12 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     justifyContent: "center",
     alignItems: "center"
+  },
+  avatar:{
+    width: "100%",
+    height: "100%",
+    borderRadius: 50,
+    objectFit: "contain"
   },
   initial:{
     color: "white"
