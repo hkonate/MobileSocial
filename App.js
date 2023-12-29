@@ -70,6 +70,9 @@ export default function App() {
             </Stack.Screen>
           ) : (
             <>
+            <Stack.Screen name={Json.createProfile.title}>
+              {(props) => <CreateProfile {...props} states={states} />}
+            </Stack.Screen>
               <Stack.Screen name={Json.home.title} options={{ title: null, headerShown: false }}>
                 {(props) => <Home {...props} />}
               </Stack.Screen>
