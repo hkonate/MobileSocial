@@ -80,7 +80,9 @@
     "label_5": "Gallerie",
     "label_6": "Description",
     "label_7": "Date",
-    "label_8": "Créer de l'évènement"
+    "label_8": "Créer de l'évènement",
+    "label_9": "Heure",
+    "label_10": "Aura lieu: "
   },
   "editEvent": {
     "title": "Editer l'évènement",

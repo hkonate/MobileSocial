@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Dimensions, Image, ScrollView } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Json from "../../assets/Utils/fr.json";
 import {
   getPermissionAndGetPicture,
   getPermissionAndTakePicture,
-  handleChange,
 } from "../EditEvent/Edit.function";
+import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { handleCreate } from "./CreateEvent.function";
 
 const CreateEvent = ({ navigation: { goBack } }) => {
@@ -58,8 +58,46 @@ const CreateEvent = ({ navigation: { goBack } }) => {
     if (emptyField) setEmptyField((prev) => !prev);
   }
   return (
-    <View>
-      <TextInput
+    <ScrollView>
+       {
+        files[0]?.files?.length > 0 &&
+        <View style={styles.carousselBox}>
+       <SwiperFlatList
+       autoplay
+       autoplayDelay={2}
+       autoplayLoop
+       showPagination
+       paginationDefaultColor="white"
+       paginationActiveColor="#584CF4"
+       data={files[0]?.files}
+       renderItem={({ item }) =>  <Image style={styles.images} source={{uri: item.uri}}/>}
+     />
+      </View>
+      }
+       <View style={{...styles.btnBox, justifyContent: files[0]?.files?.length > 0 ? "space-between": "space-around"}}>
+        <TouchableOpacity style={styles.btn} 
+        onPress={async () => {
+          await getPermissionAndGetPicture(setFiles);
+        }}>
+          <Text style={styles.textBtn}>{Json.editEvent.label_9}</Text>
+        </TouchableOpacity >
+        <TouchableOpacity style={styles.btn}  onPress={async () => {
+          await getPermissionAndTakePicture(setFiles);
+        }}>
+          <Text style={styles.textBtn}>{Json.editEvent.label_8}</Text>
+        </TouchableOpacity>
+       { files[0]?.files?.length > 0 && <TouchableOpacity style={styles.delete} 
+        onPress={() => {
+          setFiles([]);
+        }}>
+          <Text style={{fontWeight: "bold"}}>{Json.editEvent.label_10}</Text>
+        </TouchableOpacity> 
+        }
+      </View>
+      <View style={{alignItems: "center", width: "100%", marginBottom: 20}}>
+      <View style={styles.inputsBox}>
+          <Text style={styles.labels}>{Json.createEvent.label_1}</Text>
+        <TextInput style={styles.inputs}  
         placeholder={Json.createEvent.label_1}
         onChangeText={(text) =>
           setInputsData((prev) => {
@@ -69,9 +107,11 @@ const CreateEvent = ({ navigation: { goBack } }) => {
               : prev.push({ title: text });
             return [...prev];
           })
-        }
-      />
-      <TextInput
+        }/>
+        </View>
+      <View style={styles.inputsBox}>
+          <Text style={styles.labels}>{Json.createEvent.label_6}</Text>
+        <TextInput style={styles.inputs}  
         placeholder={Json.createEvent.label_6}
         onChangeText={(text) =>
           setInputsData((prev) => {
@@ -81,10 +121,12 @@ const CreateEvent = ({ navigation: { goBack } }) => {
               : prev.push({ description: text });
             return [...prev];
           })
-        }
-      />
-      <TextInput
-        placeholder={Json.editEvent.label_3}
+        }/>
+        </View>
+      <View style={styles.inputsBox}>
+          <Text style={styles.labels}>{Json.createEvent.label_3}</Text>
+        <TextInput style={styles.inputs}  
+        placeholder={Json.createEvent.label_3}
         onChangeText={(text) =>
           setInputsData((prev) => {
             const index = prev.findIndex((input) => "address" in input);
@@ -93,10 +135,12 @@ const CreateEvent = ({ navigation: { goBack } }) => {
               : prev.push({ address: text });
             return [...prev];
           })
-        }
-      />
-      <TextInput
-        placeholder={Json.editEvent.label_4}
+        }/>
+        </View>
+      <View style={styles.inputsBox}>
+          <Text style={styles.labels}>{Json.createEvent.label_4}</Text>
+        <TextInput style={styles.inputs}  
+        placeholder={Json.createEvent.label_4}
         onChangeText={(text) =>
           setInputsData((prev) => {
             const index = prev.findIndex((input) => "limit" in input);
@@ -105,54 +149,128 @@ const CreateEvent = ({ navigation: { goBack } }) => {
               : prev.push({ limit: text });
             return [...prev];
           })
-        }
-      />
-      <Button
-        title="Prendre une photo"
-        onPress={async () => {
+        }/>
+        </View>
+        <Text style={styles.dateTxt}>{Json.createEvent.label_10 + date.toLocaleString()}</Text>
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            onChange={onChange}
+          />
+        )}
+      <View style={{...styles.btnBox, justifyContent: "space-around"}}>
+        <TouchableOpacity style={styles.btn} onPress={showDatepicker}>
+          <Text style={styles.textBtn}  onPress={showTimepicker} >{Json.createEvent.label_7}</Text>
+        </TouchableOpacity >
+        <TouchableOpacity style={styles.btn}  onPress={async () => {
           await getPermissionAndTakePicture(setFiles);
-        }}
-      />
-      <Button
-        title="Gallerie"
-        onPress={async () => {
-          await getPermissionAndGetPicture(setFiles);
-        }}
-      />
-      <Button
-        title="Supprimer les photos"
-        onPress={() => {
-          setFiles([]);
-        }}
-      />
-      <Button onPress={showDatepicker} title="Show date picker!" />
-      <Button onPress={showTimepicker} title="Show time picker!" />
-      <Text>selected: {date.toLocaleString()}</Text>
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          onChange={onChange}
-        />
-      )}
-      <Button
-        title={Json.createEvent.label_8}
-        disabled={emptyField || wrongDate || files.length === 0}
+        }}>
+          <Text style={styles.textBtn}>{Json.createEvent.label_9}</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity 
+        style={{...styles.createBtn, backgroundColor: emptyField || wrongDate || files[0]?.files?.length === 0 ? "lightgrey" : "#584CF4"}} 
         onPress={async () => {
           try {
-            const res = await handleCreate(files, date, inputsData);
+            const res = await handleCreate(files[0]?.files, date, inputsData);
             if (res) goBack();
           } catch (error) {
             alert(error);
           }
         }}
-      />
-    </View>
+        disabled={emptyField || wrongDate || files[0]?.files?.length === 0}
+        >
+          <Text style={styles.textBtn}>
+          {Json.createEvent.label_8.toUpperCase()}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
 export default CreateEvent;
 
-const styles = StyleSheet.create({});
+const width = Dimensions.get('window').width;
+const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    backgroundColor: "white",
+    flexDirection: "column",
+  },
+  carousselBox:{
+    backgroundColor: "lightgrey",
+    height: 300,
+    width:"100%",
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  images:{
+    width,
+    height: "100%",
+  },
+  inputsBox:{
+    width: "90%",
+    height: 60,
+    gap: 10,
+    marginTop: 30
+  },
+  labels:{
+    fontSize: 14,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+  inputs:{
+    backgroundColor: "#FAFAFA",
+    width: "100%",
+    height: "70%",
+    borderRadius: 16,
+    paddingLeft: 10,
+  },
+  btnBox:{
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    height: 40,
+    marginTop: 20,
+    paddingHorizontal: 10
+  },
+  btn:{
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    borderRadius: 10,
+    backgroundColor: "#584CF4"
+  }, 
+  delete:{
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    borderRadius: 10,
+    backgroundColor: "red"
+  },
+  textBtn:{
+    color: "white",
+    fontWeight: "bold"
+  },
+  createBtn:{
+    width: "90%",
+    justifyContent: "center",
+    alignItems: "center",
+    height:45,
+    borderRadius: 10,
+    marginTop: 40,
+  },
+  dateTxt:{
+    marginTop: 40,
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "bold"
+  }
+});

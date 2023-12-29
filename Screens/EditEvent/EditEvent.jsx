@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, ScrollView, Dimensions, Image } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Dimensions, Image } from "react-native";
 import React, { useState } from "react";
 import Json from "../../assets/Utils/fr.json";
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
