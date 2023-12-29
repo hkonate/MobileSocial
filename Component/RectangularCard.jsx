@@ -134,10 +134,11 @@ const styles = StyleSheet.create({
     locationBox:{
         flexDirection: "row",
         alignItems: "center",
+        width: "95%",
     },
     place:{
         fontSize: 14,
-        flexWrap: "wrap"
+        flexWrap: "wrap",
     },
     locationLogo:{
         width: 20,

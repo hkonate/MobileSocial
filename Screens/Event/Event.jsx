@@ -5,7 +5,6 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Button,
   Dimensions
 } from "react-native";
 import React, { useContext, useState } from "react";
@@ -19,9 +18,11 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import Location from "../../assets/Images/location.png"
 import Calendar from "../../assets/Images/calendar.png"
 import { FormatDate } from "../../assets/Utils/formatDate";
+import ReadMore from '@fawazahmed/react-native-read-more';
+import RectangularCard from "../../Component/RectangularCard";
 
 
-const Event = ({ route, navigation: { goBack, navigate, push } }) => {
+const Event = ({ route, navigation }) => {
   const [event, setEvent] = useState(null);
   const [date, setDate] = useState(null)
   const { events, user, dispatch } = useContext(RequestContext);
@@ -58,7 +59,7 @@ const Event = ({ route, navigation: { goBack, navigate, push } }) => {
   )
     ? Json.event.label_9
     : Json.event.label_8;
-    console.log(event?.schedule);
+    console.log(event?.creator);
   return (
     <ScrollView style={styles.container}>
       { 
@@ -76,7 +77,7 @@ const Event = ({ route, navigation: { goBack, navigate, push } }) => {
      />
       </View>
         }
-        <View style={{width: "100%", paddingHorizontal: 10, marginTop: 20}}>
+    <View style={{width: "100%", paddingHorizontal: 10, marginTop: 20}}>
       <Text style={styles.title}>{event?.title}</Text>
       <View style={styles.attendeeBox}>
         <View style={styles.category}>
@@ -101,70 +102,57 @@ const Event = ({ route, navigation: { goBack, navigate, push } }) => {
         <View style={styles.locationLogoBox}>
           <Image style={styles.locationLogo} source={Calendar}/>
         </View>
-        <Text style={styles.locationTxt}>{date}</Text>
+        <Text numberOfLines={2} style={styles.locationTxt}>{date}</Text>
       </View>
       <View style={styles.locationBox}>
         <View style={styles.locationLogoBox}>
         <Image style={styles.locationLogo} source={Location}/>
         </View>
-        <Text style={styles.locationTxt}>{event?.address}</Text>
+        <Text numberOfLines={2} style={styles.locationTxt}>{event?.address}</Text>
       </View>
       <View style={styles.underline}></View>
-      
-        <View>
-          <View
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              overflow: "hidden",
-              backgroundColor: "lightgray",
-            }}
-          >
-            <Image />
+      <View style={styles.ownerBox}>
+          <View style={styles.avatarBox}>
+            {
+              event?.creator?.profile?.picture ? 
+              <Image style={styles.avatar} source={{uri:event?.creator?.profile?.picture }}/> :
+              <Text style={styles.initial}>{event?.creator?.pseudo[0]}</Text>
+            }
           </View>
-          <View>
-            <Text>{event?.creator.pseudo}</Text>
-            <Text>{Json.event.label_5}</Text>
+          <View style={styles.ownerInfoBox}>
+            <Text numberOfLines={2} style={styles.ownerName}>{event?.creator.pseudo}</Text>
+            <Text numberOfLines={2} style={styles.ownerSubtitle}>{Json.event.label_5}</Text>
           </View>
-          {event?.creator.id === user?.id && (
-            <>
-              <Button
-                title={Json.event.label_10}
-                onPress={async () => {
-                  const deletedEvent = await handleDelete(event.id);
-                  if (deletedEvent) goBack();
-                }}
-              />
-              <Button
-                title={Json.event.label_12}
-                onPress={() => navigate(Json.editEvent.title, event.id)}
-              />
-            </>
-          )}
-        </View>
-        <Text>{Json.event.label_6}</Text>
-        <Text> {event?.description} </Text>
-        <Text> {Json.event.label_3} </Text>
-        <View></View>
-        <Text>{Json.event.label_4}</Text>
-        <View></View>
-        <Text>{Json.event.label_7}</Text>
-        {similarEvents.map((similarEvent, idx) => (
+          {event?.creator.id === user.id && 
+          <>
+            <TouchableOpacity
+            style={styles.modifyBtn}  
+            onPress={() => navigation.navigate(Json.editEvent.title, event.id)}>
+              <Text style={{color: "white", ...styles.attendBtnTxt}}>{Json.event.label_12}</Text>
+            </TouchableOpacity>
           <TouchableOpacity
-            style={{
-              backgroundColor: "#f9c2ff",
-              padding: 20,
-              marginVertical: 8,
-            }}
-            key={idx}
-            onPress={() => {
-              push(Json.event.title, similarEvent);
-            }}
-          >
-            <Text>{similarEvent.title}</Text>
-          </TouchableOpacity>
-        ))}
+            style={styles.deleteBtn}  
+            onPress={async () => {
+                    const deletedEvent = await handleDelete(event.id);
+                    if (deletedEvent) navigation.goBack();
+                  }}>
+              <Text style={styles.attendBtnTxt}>{Json.event.label_10}</Text>
+            </TouchableOpacity>
+          </>
+          }
+        </View>
+        <Text style={styles.subTitle}>{Json.event.label_6}</Text>
+        <ReadMore 
+        style={{fontSize: 15, marginBottom: 15}}
+        numberOfLines={4} 
+        seeMoreText={Json.profile.label_4}
+        seeMoreStyle={{color: "#584CF4"}}
+        seeLessText={Json.profile.label_5}
+        seeLessStyle={{color: "#584CF4"}}
+        >{event?.description}
+        </ReadMore>
+        <Text style={styles.subTitle}>{Json.event.label_7}</Text>
+        <RectangularCard events={similarEvents} navigation={navigation}/>
       </View>
     </ScrollView>
   );
@@ -176,7 +164,7 @@ const styles = StyleSheet.create({
   
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#fafafa",
     flexDirection: "column"
   },
   carousselBox:{
@@ -268,7 +256,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 25,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#f8f8f8",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -280,5 +268,69 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     textAlign: "center"
+  },
+  ownerBox:{
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    gap: 10,
+    marginBottom: 15
+  },
+  avatarBox:{
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: "hidden",
+    backgroundColor: "red",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  avatar:{
+    width: "100%",
+    height:"100%",
+    borderRadius: 25,
+    objectFit: "contain"
+  },
+  initial:{
+    color: "white",
+    textTransform: "uppercase",
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+  ownerInfoBox:{
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: 3
+  },
+  ownerName:{
+    fontSize: 14,
+    fontWeight: "bold",
+    textTransform: "capitalize"
+  },
+  ownerSubtitle:{
+    fontSize: 9,
+    color: "lightgrey",
+    fontWeight: "bold"
+  },
+  deleteBtn:{
+    height: 30,
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    backgroundColor: "red"
+  },
+  modifyBtn:{
+    height: 30,
+    paddingHorizontal: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    backgroundColor: "#584CF4"
+  },
+  subTitle:{
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 15
   }
 });
