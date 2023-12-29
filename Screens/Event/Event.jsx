@@ -112,13 +112,13 @@ const Event = ({ route, navigation }) => {
       </View>
       <View style={styles.underline}></View>
       <View style={styles.ownerBox}>
-          <View style={styles.avatarBox}>
+          <TouchableOpacity onPress={()=> navigation.push(Json.profile.title, event?.creator?.id)} style={styles.avatarBox}>
             {
               event?.creator?.profile?.picture ? 
               <Image style={styles.avatar} source={{uri:event?.creator?.profile?.picture }}/> :
               <Text style={styles.initial}>{event?.creator?.pseudo[0]}</Text>
             }
-          </View>
+          </TouchableOpacity>
           <View style={styles.ownerInfoBox}>
             <Text numberOfLines={2} style={styles.ownerName}>{event?.creator.pseudo}</Text>
             <Text numberOfLines={2} style={styles.ownerSubtitle}>{Json.event.label_5}</Text>

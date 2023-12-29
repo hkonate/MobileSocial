@@ -56,7 +56,7 @@ const SmallCard = ({ event, navigation}) =>{
     const capitalizedDate = dateFormatee.replace(/(?:^|\s)(?!à)([^\s])/g, (match) => match.toUpperCase());
 
 
-    return  <TouchableOpacity onPress={()=> navigation.navigate(Json.event.title, event)} style={styles.card}> 
+    return  <TouchableOpacity onPress={()=> navigation.push(Json.event.title, event)} style={styles.card}> 
         <View style={{width: "100%", height: "60%", position: "relative"}}>
         <Image style={styles.image} source={imageSource}/>
         {

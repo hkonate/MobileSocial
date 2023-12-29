@@ -59,7 +59,7 @@ const RectangularCard = ({events, navigation}) => {
     }
     const dateFormatee = new Intl.DateTimeFormat('fr-FR', options).format(dateActuelle);
     const capitalizedDate = dateFormatee.replace(/(?:^|\s)(?!à)([^\s])/g, (match) => match.toUpperCase());
-        return <TouchableOpacity key={idx} onPress={()=> currentDate < dateActuelle && navigation.navigate(Json.event.title, event)} style={styles.container}>
+        return <TouchableOpacity key={idx} onPress={()=> currentDate < dateActuelle && navigation.push(Json.event.title, event)} style={styles.container}>
     <View style={styles.left}>
         <Image style={styles.image} source={imageSource}/>
     {

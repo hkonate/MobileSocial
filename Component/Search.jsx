@@ -9,7 +9,7 @@ const Search = ({setModalVisible,setEventName, rangePrice, inclusiveArr, id, nav
     <View style={styles.searchBox}>
     <TouchableOpacity onPress={async ()=>{
       if(!filter) {
-        navigation.navigate(Json.filter.title, {rangePrice, inclusiveArr, id})
+        navigation.push(Json.filter.title, {rangePrice, inclusiveArr, id})
         }else{
           await HandleEventFilter(navigation.goBack, setEvents, categoryArr[id], eventName, inclusiveArr, rangePrice, filter)
         }
