@@ -39,7 +39,9 @@ export const getPermissionAndGetPicture = async (setSelectedPicture) => {
       });
       if (result.canceled === false) {
         setSelectedPicture((prev) => {
-          prev.push({
+          const index = prev.findIndex((input) =>  "files" in input)
+          if(index !== -1){
+          prev[index].files.push({
             uri: result.assets[0].uri,
             name: `my-pic.${
               result.assets[0].uri.split("/").pop().split(".")[0]
@@ -48,6 +50,17 @@ export const getPermissionAndGetPicture = async (setSelectedPicture) => {
               result.assets[0].uri.split("/").pop().split(".")[1]
             }`,
           });
+        }else{
+          prev.push({files:[{
+            uri: result.assets[0].uri,
+            name: `my-pic.${
+              result.assets[0].uri.split("/").pop().split(".")[0]
+            }`,
+            type: `image/${
+              result.assets[0].uri.split("/").pop().split(".")[1]
+            }`,
+          }]})
+        }
           return [...prev];
         });
       }
@@ -66,7 +79,9 @@ export const getPermissionAndTakePicture = async (setSelectedPicture) => {
       const result = await ImagePicker.launchCameraAsync();
       if (result.canceled === false) {
         setSelectedPicture((prev) => {
-          prev.push({
+          const index = prev.findIndex((input) =>  "files" in input)
+          if(index !== -1){
+          prev[index].files.push({
             uri: result.assets[0].uri,
             name: `my-pic.${
               result.assets[0].uri.split("/").pop().split(".")[0]
@@ -75,6 +90,17 @@ export const getPermissionAndTakePicture = async (setSelectedPicture) => {
               result.assets[0].uri.split("/").pop().split(".")[1]
             }`,
           });
+        }else{
+          prev.push({files:[{
+            uri: result.assets[0].uri,
+            name: `my-pic.${
+              result.assets[0].uri.split("/").pop().split(".")[0]
+            }`,
+            type: `image/${
+              result.assets[0].uri.split("/").pop().split(".")[1]
+            }`,
+          }]})
+        }
           return [...prev];
         });
       }

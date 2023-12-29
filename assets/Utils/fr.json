@@ -90,7 +90,10 @@
     "label_4": "Participants",
     "label_5": "Gallerie",
     "label_6": "Modifier",
-    "label_7": "Description"
+    "label_7": "Description",
+    "label_8": "Photo",
+    "label_9": "Gallerie",
+    "label_10": "Supprimer"
   },
   "profile": {
     "title": "Profile",
