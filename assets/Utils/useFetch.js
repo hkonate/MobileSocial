@@ -73,12 +73,15 @@ const Fetch = async () => {
       );
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         return data;
       } else {
         const data = await response.json();
+        console.log(data);
         return null;
       }
     } catch (error) {
+      console.log("error", error);
       return null;
     }
   };

@@ -3,18 +3,22 @@ import * as ImagePicker from "expo-image-picker";
 
 export const handleChange = async (eventId, arrOfObjInputs) => {
   try {
-    const textInputs = ["title", "address", "limit", "description"];
+    const textInputs = ["title", "address", "limit", "description", "category", "price"];
     const formData = new FormData();
     for (const objectInput of arrOfObjInputs) {
       if ("files" in objectInput) {
         for (const file of objectInput.files) {
           formData.append("files", file);
         }
+      }else if("inclusive" in objectInput){
+        for (const inclusive of objectInput.inclusive) {
+          formData.append("inclusive[]", inclusive);
+        }
       } else {
         for (const textInput of textInputs) {
           if (
-            textInput in objectInput &&
-            objectInput[textInput].trim().length > 0
+            textInput in objectInput && ( typeof objectInput[textInput] === "number" ||
+            objectInput[textInput].trim().length > 0)
           ) {
             formData.append(textInput, objectInput[textInput]);
           }

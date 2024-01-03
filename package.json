@@ -29,6 +29,7 @@
     "react-native-screens": "^3.27.0",
     "react-native-select-multiple": "^2.1.0",
     "react-native-swiper-flatlist": "^3.2.3",
+    "react-native-virtualized-view": "^1.0.0",
     "react-native-walkthrough-tooltip": "^1.5.0"
   },
   "devDependencies": {

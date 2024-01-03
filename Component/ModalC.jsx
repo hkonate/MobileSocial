@@ -6,6 +6,7 @@ import ButtonGroup from "./ButtonGroup";
 import Json from "../assets/Utils/fr.json";
 import CLOSE from "../assets/Images/close.png"
 import { HandleEventFilter } from '../Screens/Filter/Filter.function';
+import { ScrollView } from 'react-native-virtualized-view';
 
 const ModalC = ({setModalVisible, modalVisible, rangePrice, inclusiveArr, eventName, navigation, setRangePrice, id, setId, setEvents, filter, setInclusiveArr}) => {
   const categoryArr = ["", "MOVIE", "ART", "STUDY", "CONCERT", "SPORT", "KARAOKE", "RESTAURANT", "GAMING", "OTHERS"]  
@@ -55,7 +56,6 @@ const ModalC = ({setModalVisible, modalVisible, rangePrice, inclusiveArr, eventN
             if(!filter){
             navigation.navigate(Json.filter.title, {rangePrice, inclusiveArr, id, eventName})
           }else{
-            console.log("check", categoryArr[id], eventName, inclusiveArr, rangePrice, filter);
             await HandleEventFilter(navigation.goBack, setEvents, categoryArr[id], eventName, inclusiveArr, rangePrice, filter)
           }
           }}>

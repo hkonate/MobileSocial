@@ -59,7 +59,6 @@ const Event = ({ route, navigation }) => {
   )
     ? Json.event.label_9
     : Json.event.label_8;
-    console.log(event?.creator);
   return (
     <ScrollView style={styles.container}>
       { 
@@ -127,7 +126,7 @@ const Event = ({ route, navigation }) => {
           <>
             <TouchableOpacity
             style={styles.modifyBtn}  
-            onPress={() => navigation.navigate(Json.editEvent.title, event.id)}>
+            onPress={() => navigation.navigate(Json.editEvent.title, event)}>
               <Text style={{color: "white", ...styles.attendBtnTxt}}>{Json.event.label_12}</Text>
             </TouchableOpacity>
           <TouchableOpacity

@@ -1,7 +1,10 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Dimensions, Image } from "react-native";
+import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Dimensions, Image } from "react-native";
 import React, { useState } from "react";
 import Json from "../../assets/Utils/fr.json";
+import Slider from "react-native-a11y-slider";
+import SelectMultiple from 'react-native-select-multiple'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
+import ButtonGroup from "../../Component/ButtonGroup";
 import {
   getPermissionAndGetPicture,
   getPermissionAndTakePicture,
@@ -11,11 +14,17 @@ import {
 const EditEvent = ({ route, navigation: { goBack } }) => {
   const [inputsData, setInputsData] = useState([]);
   const [emptyField, setEmptyField] = useState(true);
-  const eventId = route.params;
+  const [id, setId] = useState(null)
+  
+  const event = route.params;
+  const categoryArr = ["","OTHERS", "ART", "STUDY", "CONCERT", "SPORT", "KARAOKE", "RESTAURANT", "GAMING", "MOVIE"]  
+  const inclusive = ["HALAL", "VEGAN", "VEGE", "STANDARD", "CASHER"]
+  
+
   const emptyInputs = Object.values(inputsData).find((value) => {
     const key = Object.keys(value)[0];
-    if (typeof value[key] === "string") {
-      return value[key].trim().length > 0;
+    if (typeof value[key] === "string" || typeof value[key] === "number") {
+      return value[key].toString().trim().length > 0;
     } else {
       return value[key].length;
     }
@@ -25,10 +34,64 @@ const EditEvent = ({ route, navigation: { goBack } }) => {
   } else {
     if (!emptyField) setEmptyField((prev) => !prev);
   }
-  const indexFiles = inputsData.findIndex(input => "files" in input)
-  console.log(inputsData[indexFiles]?.files);
+
+  onSelectionsChange = (selectedItems, item) => {
+    setInputsData(prev => {
+      if(indexInclusive !== -1){
+        const index = prev[indexInclusive]?.inclusive.findIndex((typeOfFood) => typeOfFood === item.value);
+        if (index !== -1) {
+          prev[indexInclusive]?.inclusive.splice(index, 1);
+        } else {
+          prev[indexInclusive]?.inclusive.push(item.value)
+        }
+      }else{
+        prev.push({inclusive:[item.value]})
+      }
+      return [...prev];
+    });
+  }
+
+  const indexFiles =  inputsData.findIndex(input => "files" in input) 
+  const indexPrice =  inputsData.findIndex(input => "price" in input)
+  const indexInclusive =  inputsData.findIndex(input => "inclusive" in input)
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView nestedScrollEnabled={true} style={styles.container}>
+      <Text style={{marginTop: 10,...styles.subtitleModal}}>{Json.event.label_15}</Text>
+      <View style={styles.modalBtnGrp}>
+        <ButtonGroup id={id} setId={setId} buttons={categoryArr} modal={true} defined={true} setInputsData={setInputsData} />
+      </View>
+      <View style={styles.underline}/>
+      <Text style={styles.subtitleModal}>{Json.home.label_7}</Text>
+      <Slider style={{marginBottom: 30}} 
+          min={0} 
+          max={1000} 
+          values={[inputsData[indexPrice]?.price !== undefined ? inputsData[indexPrice]?.price : event?.price]} 
+          markerColor='#584CF4' 
+          onChange={values => setInputsData((prev) => {
+            if(indexPrice !== -1){
+              prev[indexPrice].price = values[0]
+            }else{
+              prev.push({ price: values[0]})
+            }
+            return [...prev];
+          })}  />
+      <View style={styles.underline}/>
+      <Text style={styles.subtitleModal}>{Json.editEvent.label_11}</Text>
+      <Slider style={{marginBottom: 30}} min={event?.listOfAttendees.length > 1 ? event?.listOfAttendees.length : 2} max={300} values={event?.listOfAttendees.length > 15 ? event?.listOfAttendees.length : 15} markerColor='#584CF4' onChange={values => setInputsData((prev) => {
+            const index = prev.findIndex((input) => "limit" in input);
+            index !== -1
+            ? (prev[index] = { limit: values[0] })
+            : prev.push({ limit: values[0] });
+            return [...prev];
+          })}  />
+      <View style={styles.underline}/>
+      <Text style={styles.subtitleModal}>{Json.editEvent.label_2}</Text>
+      <SelectMultiple 
+        items={inclusive}
+        selectedItems={indexInclusive !== -1 ? inputsData[indexInclusive].inclusive : []}
+        onSelectionsChange={this.onSelectionsChange}
+        />
       {
         inputsData[indexFiles]?.files?.length > 0 &&
         <View style={styles.carousselBox}>
@@ -127,7 +190,7 @@ const EditEvent = ({ route, navigation: { goBack } }) => {
         <TouchableOpacity 
         style={{...styles.modifyBtn, backgroundColor: emptyField ? "lightgrey" : "#584CF4"}} 
         onPress={async () => {
-          const updatedEvent = await handleChange(eventId, inputsData);
+          const updatedEvent = await handleChange(event?.id, inputsData);
           if (updatedEvent) goBack();
         }}
         disabled={emptyField}
@@ -214,5 +277,24 @@ const styles = StyleSheet.create({
     height:45,
     borderRadius: 10,
     marginTop: 40
-  }
+  },
+  subtitleModal:{
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    paddingLeft: 10
+  },
+  modalBtnGrp:{
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginLeft: 10,
+    gap: 10,
+    marginBottom: 20
+  },
+  underline:{
+    borderBottomWidth: 1,
+    borderColor: "lightgrey",
+    marginBottom: 10,
+    marginHorizontal: 10
+  },
 });

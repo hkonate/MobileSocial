@@ -10,7 +10,7 @@ import articon from '../assets/Images/articon.png';
 import valideicon from "../assets/Images/validateicon.png"
 import othersicon from '../assets/Images/othersicon.png';
 import { handleFetchByCat } from "../Screens/Home/Home.function";
-const ButtonGroup = ({id, setId,buttons, setEvents, modal}) => {
+const ButtonGroup = ({id, setId,buttons, setEvents, modal, defined,setInputsData}) => {
     return buttons.map((button, idx) => 
     { 
         let icon, txt;
@@ -56,12 +56,20 @@ const ButtonGroup = ({id, setId,buttons, setEvents, modal}) => {
             txt = "Autres"
             break;
         }
-        return <TouchableOpacity onPress={async ()=>
+        return (defined && button === "") ? null : <TouchableOpacity onPress={async ()=>
             {
                 setId(idx)
                 if(!modal){
                     const res = await handleFetchByCat(button)
                     setEvents(res)
+                }else if(defined){
+                    setInputsData((prev) => {
+                        const index = prev.findIndex((input) => "category" in input);
+                        index !== -1
+                          ? (prev[index] = { category: button })
+                          : prev.push({ category: button });
+                        return [...prev];
+                      })
                 }
             }} 
             key={idx} 

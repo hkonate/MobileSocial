@@ -22,7 +22,6 @@ const Filter = ({route, navigation}) => {
       }
       fetchByFilter()
     }, [])
-    console.log(id, "hihi");
   return (
     <ScrollView style={styles.container}>
       <View style={styles.inputBox}>

@@ -70,9 +70,6 @@ export default function App() {
             </Stack.Screen>
           ) : (
             <>
-              <Stack.Screen name={Json.createEvent.title}>
-                {(props) => <CreateEvent {...props} />}
-              </Stack.Screen>
               <Stack.Screen name={Json.home.title} options={{ title: null, headerShown: false }}>
                 {(props) => <Home {...props} />}
               </Stack.Screen>
@@ -87,6 +84,9 @@ export default function App() {
               </Stack.Screen>
               <Stack.Screen name={Json.editProfile.title}>
                 {(props) => <EditProfile {...props} />}
+              </Stack.Screen>
+              <Stack.Screen name={Json.createEvent.title}>
+                {(props) => <CreateEvent {...props} />}
               </Stack.Screen>
               <Stack.Screen name={Json.filter.title} options={{title: null, headerShown: false }}>
                 {(props) => <Filter {...props} />}
