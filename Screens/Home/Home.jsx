@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Button,
   View,
   Image
 } from "react-native";
@@ -64,8 +65,11 @@ export const Home = ({ navigation }) => {
           <Text style={styles.textName}>{user.firstname + " " + user.lastname}</Text>
         </View>
       </View>
+      <Button title="create event" onPress={()=> navigation.navigate(Json.createEvent.title)}/>
+
       <Search setModalVisible={setModalVisible} setEventName={setEventName} rangePrice={rangePrice} inclusiveArr={inclusiveArr} id={id} navigation={navigation} eventName={eventName} />
      <Modal setModalVisible={setModalVisible} modalVisible={modalVisible} rangePrice={rangePrice} inclusiveArr={inclusiveArr} id={id} eventName={eventName} navigation={navigation} setRangePrice={setRangePrice} setId={setId} setEvents={setEvents} setInclusiveArr={setInclusiveArr} />
+     <Text style={{ marginTop: 20,...styles.categoryTitle}}>{Json.home.label_9}</Text>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.carousel}>
        {
          lastEvents && lastEvents?.length > 0 ? lastEvents.map((event, idx) =>  <Card key={idx} event={event} navigation={navigation} />) :
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
   },
   carousel:{
     width: "100%",
-    marginVertical: 20
+   marginBottom: 20
   },
   categoryTitle:{
     fontSize: 18,

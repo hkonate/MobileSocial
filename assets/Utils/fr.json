@@ -48,7 +48,9 @@
     "label_5": "Évènements",
     "label_6": "PAS D'ÉVÈNEMENTS",
     "label_7": "Prix",
-    "label_8": "Catégories"
+    "label_8": "Catégories",
+    "label_9": "Les Prochains événements"
+
   },
   "event": {
     "title": "Event",

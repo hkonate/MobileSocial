@@ -2,6 +2,9 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Dimensions
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import Json from "../../assets/Utils/fr.json";
+import Slider from "react-native-a11y-slider";
+import SelectMultiple from 'react-native-select-multiple'
+import ButtonGroup from "../../Component/ButtonGroup";
 import {
   getPermissionAndGetPicture,
   getPermissionAndTakePicture,
@@ -17,6 +20,9 @@ const CreateEvent = ({ navigation: { goBack } }) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const [id, setId] = useState(null)
+  const categoryArr = ["","OTHERS", "ART", "STUDY", "CONCERT", "SPORT", "KARAOKE", "RESTAURANT", "GAMING", "MOVIE"]  
+  const inclusive = ["HALAL", "VEGAN", "VEGE", "STANDARD", "CASHER"]
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -44,6 +50,21 @@ const CreateEvent = ({ navigation: { goBack } }) => {
     showMode("time");
   };
 
+  onSelectionsChange = (selectedItems, item) => {
+    setInputsData(prev => {
+      if(indexInclusive !== -1){
+        const index = prev[indexInclusive]?.inclusive.findIndex((typeOfFood) => typeOfFood === item.value);
+        if (index !== -1) {
+          prev[indexInclusive]?.inclusive.splice(index, 1);
+        } else {
+          prev[indexInclusive]?.inclusive.push(item.value)
+        }
+      }else{
+        prev.push({inclusive:[item.value]})
+      }
+      return [...prev];
+    });
+  }
   const emptyInputs = Object.values(inputsData).find((value) => {
     const key = Object.keys(value)[0];
     if (typeof value[key] === "string") {
@@ -57,8 +78,47 @@ const CreateEvent = ({ navigation: { goBack } }) => {
   } else {
     if (emptyField) setEmptyField((prev) => !prev);
   }
+
+  const indexPrice =  inputsData.findIndex(input => "price" in input)
+  const indexInclusive =  inputsData.findIndex(input => "inclusive" in input)
+  
   return (
     <ScrollView>
+      <Text style={{marginTop: 10,...styles.subtitleModal}}>{Json.event.label_15}</Text>
+      <View style={styles.modalBtnGrp}>
+        <ButtonGroup id={id} setId={setId} buttons={categoryArr} modal={true} defined={true} setInputsData={setInputsData} />
+      </View>
+      <View style={styles.underline}/>
+      <Text style={styles.subtitleModal}>{Json.home.label_7}</Text>
+      <Slider style={{marginBottom: 30}} 
+          min={0} 
+          max={1000} 
+          values={[inputsData[indexPrice]?.price !== undefined ? inputsData[indexPrice]?.price : 0]} 
+          markerColor='#584CF4' 
+          onChange={values => setInputsData((prev) => {
+            if(indexPrice !== -1){
+              prev[indexPrice].price = values[0]
+            }else{
+              prev.push({ price: values[0]})
+            }
+            return [...prev];
+          })}  />
+      <View style={styles.underline}/>
+      <Text style={styles.subtitleModal}>{Json.editEvent.label_11}</Text>
+      <Slider style={{marginBottom: 30}} min={2} max={300} values={15} markerColor='#584CF4' onChange={values => setInputsData((prev) => {
+            const index = prev.findIndex((input) => "limit" in input);
+            index !== -1
+            ? (prev[index] = { limit: values[0] })
+            : prev.push({ limit: values[0] });
+            return [...prev];
+          })}  />
+      <View style={styles.underline}/>
+      <Text style={styles.subtitleModal}>{Json.editEvent.label_2}</Text>
+      <SelectMultiple 
+        items={inclusive}
+        selectedItems={indexInclusive !== -1 ? inputsData[indexInclusive].inclusive : []}
+        onSelectionsChange={this.onSelectionsChange}
+        />
        {
         files[0]?.files?.length > 0 &&
         <View style={styles.carousselBox}>
@@ -137,20 +197,6 @@ const CreateEvent = ({ navigation: { goBack } }) => {
           })
         }/>
         </View>
-      <View style={styles.inputsBox}>
-          <Text style={styles.labels}>{Json.createEvent.label_4}</Text>
-        <TextInput style={styles.inputs}  
-        placeholder={Json.createEvent.label_4}
-        onChangeText={(text) =>
-          setInputsData((prev) => {
-            const index = prev.findIndex((input) => "limit" in input);
-            index !== -1
-              ? (prev[index] = { limit: text })
-              : prev.push({ limit: text });
-            return [...prev];
-          })
-        }/>
-        </View>
         <Text style={styles.dateTxt}>{Json.createEvent.label_10 + date.toLocaleString()}</Text>
         {show && (
           <DateTimePicker
@@ -163,11 +209,9 @@ const CreateEvent = ({ navigation: { goBack } }) => {
         )}
       <View style={{...styles.btnBox, justifyContent: "space-around"}}>
         <TouchableOpacity style={styles.btn} onPress={showDatepicker}>
-          <Text style={styles.textBtn}  onPress={showTimepicker} >{Json.createEvent.label_7}</Text>
+          <Text style={styles.textBtn}>{Json.createEvent.label_7}</Text>
         </TouchableOpacity >
-        <TouchableOpacity style={styles.btn}  onPress={async () => {
-          await getPermissionAndTakePicture(setFiles);
-        }}>
+        <TouchableOpacity style={styles.btn}  onPress={showTimepicker} >
           <Text style={styles.textBtn}>{Json.createEvent.label_9}</Text>
         </TouchableOpacity>
       </View>
@@ -266,11 +310,31 @@ const styles = StyleSheet.create({
     height:45,
     borderRadius: 10,
     marginTop: 40,
+    marginBottom: 20
   },
   dateTxt:{
     marginTop: 40,
     textAlign: "center",
     fontSize: 16,
     fontWeight: "bold"
-  }
+  },
+  subtitleModal:{
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    paddingLeft: 10
+  },
+  modalBtnGrp:{
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginLeft: 10,
+    gap: 10,
+    marginBottom: 20
+  },
+  underline:{
+    borderBottomWidth: 1,
+    borderColor: "lightgrey",
+    marginBottom: 10,
+    marginHorizontal: 10
+  },
 });
