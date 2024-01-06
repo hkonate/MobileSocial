@@ -38,6 +38,7 @@ export default function App() {
 
   Stack;
   const states = {
+    user,
     setUser,
     setCreatedProfile,
     setOnBoarding,
@@ -64,9 +65,9 @@ export default function App() {
                 {(props) => <Register {...props} states={states} />}
               </Stack.Screen>
             </>
-          ) : (!createdProfile && !user)  ? (
+          ) : (createdProfile !== "done")  ? (
             <Stack.Screen name={Json.createProfile.title}>
-              {(props) => <CreateProfile {...props} states={states} />}
+              {(props) => <CreateProfile {...props} states={states} user={user} />}
             </Stack.Screen>
           ) : (
             <>

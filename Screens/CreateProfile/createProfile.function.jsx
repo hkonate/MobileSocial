@@ -1,9 +1,9 @@
-import { CreatedProfile } from "../../Context/RequestContext/RequestActions";
+import { CreatedProfile, RequestSucceed } from "../../Context/RequestContext/RequestActions";
 import Fetch from "../../assets/Utils/useFetch";
 import useSecureStore from "../../assets/Utils/useSecureStore";
 import * as ImagePicker from "expo-image-picker";
 
-export const handleUpdate = async (selectedPicture, bio, hobbies, dispatch) => {
+export const handleUpdate = async (selectedPicture, bio, hobbies, dispatch, user) => {
   const formdata = new FormData();
   if (bio || hobbies || selectedPicture) {
     try {
@@ -24,8 +24,11 @@ export const handleUpdate = async (selectedPicture, bio, hobbies, dispatch) => {
       const useFetch = await Fetch();
       const data = await useFetch.PUTMEDIA("profile", formdata);
       if (data) {
+        const userCredentials = {...user, profile:{bio: data.bio, picture: data.picture}}
         const { setValue } = useSecureStore();
         await setValue("createdProfile", JSON.stringify("done"));
+        await setValue("userCredentials", JSON.stringify(userCredentials));
+        dispatch(RequestSucceed(userCredentials));
         dispatch(CreatedProfile());
         return data;
       }

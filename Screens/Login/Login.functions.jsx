@@ -40,19 +40,16 @@ export const handleSubmit = async (email, password, dispatch) => {
         },
       }
     );
+    const userCredentials = await response.json();
     if (response.ok) {
-      const userCredentials = await response.json();
       dispatch(RequestSucceed(userCredentials));
       await setItemAsync("userCredentials", JSON.stringify(userCredentials));
       return userCredentials;
     } else {
-    const data=  await response.json();
-      console.log(data);
       dispatch(RequestFailure());
       return "error_3";
     }
   } catch (error) {
-    console.log(error);
     dispatch(RequestFailure());
     return "error_3";
   }

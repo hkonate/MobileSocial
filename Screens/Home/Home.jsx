@@ -29,7 +29,6 @@ export const Home = ({ navigation }) => {
   const [id, setId] = useState(0)
   const { user, dispatch } = useContext(RequestContext);
   const categoryArr = ["", "MOVIE", "ART", "STUDY", "CONCERT", "SPORT", "KARAOKE", "RESTAURANT", "GAMING", "OTHERS"]
-
   useFocusEffect(
     React.useCallback(() => {
       const eventsRequest = async () => {

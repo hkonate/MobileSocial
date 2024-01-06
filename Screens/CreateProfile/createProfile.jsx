@@ -14,13 +14,12 @@ import Camera from "../../assets/Images/camera.png"
 import { handleUpdate } from "./createProfile.function";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
 import { getPermissionAndGetPicture, getPermissionAndTakePicture } from "./createProfile.function";
-export const CreateProfile = ({ states }) => {
+export const CreateProfile = ({ states, user }) => {
   const [selectedPicture, setSelectedPicture] = useState(null);
   const [desc, setDesc] = useState(null);
   const [hobbies, setHobbies] = useState(null);
   const { setCreatedProfile } = states;
   const { dispatch } = useContext(RequestContext);
-
   return (
     <View style={styles.container}>
       <View
@@ -52,7 +51,7 @@ export const CreateProfile = ({ states }) => {
         style={{...styles.btn, backgroundColor: !desc || !hobbies || !desc.trim() || !hobbies.trim() ? "lightgrey": "#584CF4"}}  
         disabled={!desc || !hobbies || !desc.trim() || !hobbies.trim()}
         onPress={async () => {
-          const result = await handleUpdate(selectedPicture,desc,hobbies,setCreatedProfile,dispatch);
+          const result = await handleUpdate(selectedPicture,desc,hobbies,dispatch, user);
           if (result) {
             setCreatedProfile("done");
           }
