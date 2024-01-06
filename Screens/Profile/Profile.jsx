@@ -7,10 +7,13 @@ import Fetch from "../../assets/Utils/useFetch";
 import Json from "../../assets/Utils/fr.json";
 import Modify from "../../assets/Images/modify.png"
 import RectangularCard from "../../Component/RectangularCard";
+import useSecureStore from "../../assets/Utils/useSecureStore";
+import { RequestSucceed } from "../../Context/RequestContext/RequestActions";
 
-const Profile = ({ navigation, route }) => {
-  const { user } = useContext(RequestContext);
+const Profile = ({ navigation, route, states }) => {
+  const { user, dispatch } = useContext(RequestContext);
   const [data, setData] = useState(null)
+  const {setUser} = states
   useFocusEffect(
     React.useCallback(() => {
       const id = route.params || user.id;
@@ -28,6 +31,7 @@ const Profile = ({ navigation, route }) => {
       fetchProfile();
     }, [])
     );
+    console.log(states);
   return (
     <View style={styles.container}>
       <View style={styles.top} >
@@ -48,10 +52,27 @@ const Profile = ({ navigation, route }) => {
             <Text style={styles.subString}>{Json.profile.label_10}</Text>
           </View>
         </View>
-       {user?.id === data?.user?.id && <TouchableOpacity  style={styles.editBtn} onPress={()=>{navigation.navigate(Json.editProfile.title, data)}}>
+       {user?.id === data?.user?.id &&
+       <View style={styles.btnBox}>
+       <TouchableOpacity  style={styles.editBtn} onPress={()=>{navigation.navigate(Json.editProfile.title, data)}}>
           <Image style={styles.logoBtn} source={Modify}/>
           <Text style={styles.textBtn}>{Json.profile.label_8}</Text>
-        </TouchableOpacity>}
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.deleteBtn} onPress={async ()=>{
+          const {removeValue} = useSecureStore()
+          const fetchToken = await Fetch()
+          const res = await fetchToken.DELETE("auth")
+          if(res){
+            await removeValue("userCredentials")
+            dispatch(RequestSucceed(null))
+            setUser(null)
+          }
+        }}>
+          <Text>{Json.profile.label_11}</Text>
+        </TouchableOpacity>
+        </View>
+        }
+        
       </View>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.bot}>
         <Text style={styles.subtitle}>{Json.profile.label_6}</Text>
@@ -128,6 +149,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center"
   },
+  btnBox:{
+    flexDirection: "row",
+    width: "100%",
+    height: "20%",
+    justifyContent: "space-between"
+  },
   leftInfo:{
     width: "40%",
     flexDirection: "column",
@@ -159,7 +186,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "49%",
-    height: "18%",
+    height: "100%",
+    padding: 10
+  },
+  deleteBtn:{
+    backgroundColor: "red",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "49%",
+    height: "100%",
     padding: 10
   },
   logoBtn:{

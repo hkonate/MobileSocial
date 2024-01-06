@@ -38,11 +38,11 @@ export default function App() {
 
   Stack;
   const states = {
-    user,
     setUser,
     setCreatedProfile,
     setOnBoarding,
   };
+
   return (
     <RequestContextProvider>
       <NavigationContainer>
@@ -81,7 +81,7 @@ export default function App() {
                 {(props) => <EditEvent {...props} />}
               </Stack.Screen>
               <Stack.Screen name={Json.profile.title}>
-                {(props) => <Profile {...props} />}
+                {(props) => <Profile {...props} states={states} />}
               </Stack.Screen>
               <Stack.Screen name={Json.editProfile.title}>
                 {(props) => <EditProfile {...props} />}
@@ -99,11 +99,3 @@ export default function App() {
     </RequestContextProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    paddingTop: 20,
-  },
-});

@@ -56,7 +56,7 @@ export const Home = ({ navigation }) => {
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.userInfosBox}>
         <TouchableOpacity onPress={()=> navigation.navigate(Json.profile.title)} style={styles.avatarBox}>
-         {user?.profile?.picture? <Image source={{uri: user.profile.picture}} />:
+         {user?.profile?.picture? <Image style={styles.avatar} source={{uri: user.profile.picture}} />:
           <Text style={styles.initial}>{user?.firstname[0]?.toUpperCase() + user?.lastname[0]?.toUpperCase()}</Text>}
         </TouchableOpacity>
         <View style={styles.welcomeBox}>
