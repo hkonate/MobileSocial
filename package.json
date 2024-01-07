@@ -31,7 +31,8 @@
     "react-native-select-multiple": "^2.1.0",
     "react-native-swiper-flatlist": "^3.2.3",
     "react-native-virtualized-view": "^1.0.0",
-    "react-native-walkthrough-tooltip": "^1.5.0"
+    "react-native-walkthrough-tooltip": "^1.5.0",
+    "expo-constants": "~14.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

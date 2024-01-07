@@ -7,10 +7,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Button,
   View,
   Image
 } from "react-native";
+import Constants from 'expo-constants';
 import ButtonGroup from "../../Component/ButtonGroup";
 import Card from "../../Component/Card";
 import SmallCard from "../../Component/SmallCard";
@@ -64,8 +64,6 @@ export const Home = ({ navigation }) => {
           <Text style={styles.textName}>{user.firstname + " " + user.lastname}</Text>
         </View>
       </View>
-      <Button title="create event" onPress={()=> navigation.navigate(Json.createEvent.title)}/>
-
       <Search setModalVisible={setModalVisible} setEventName={setEventName} rangePrice={rangePrice} inclusiveArr={inclusiveArr} id={id} navigation={navigation} eventName={eventName} />
      <Modal setModalVisible={setModalVisible} modalVisible={modalVisible} rangePrice={rangePrice} inclusiveArr={inclusiveArr} id={id} eventName={eventName} navigation={navigation} setRangePrice={setRangePrice} setId={setId} setEvents={setEvents} setInclusiveArr={setInclusiveArr} />
      <Text style={{ marginTop: 20,...styles.categoryTitle}}>{Json.home.label_9}</Text>
@@ -96,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fafafa",
     paddingHorizontal: 10,
-    paddingTop: 50,
+    paddingTop: Constants.statusBarHeight + 25,
   },
   userInfosBox:{
     flexDirection: "row",

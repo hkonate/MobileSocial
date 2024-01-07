@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Dimensions, Image, ScrollView } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions, Image, ScrollView } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import Json from "../../assets/Utils/fr.json";
@@ -9,6 +9,7 @@ import {
   getPermissionAndGetPicture,
   getPermissionAndTakePicture,
 } from "../EditEvent/Edit.function";
+import Constants from 'expo-constants';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { handleCreate } from "./CreateEvent.function";
 
@@ -83,7 +84,7 @@ const CreateEvent = ({ navigation: { goBack } }) => {
   const indexInclusive =  inputsData.findIndex(input => "inclusive" in input)
   
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <Text style={{marginTop: 10,...styles.subtitleModal}}>{Json.event.label_15}</Text>
       <View style={styles.modalBtnGrp}>
         <ButtonGroup id={id} setId={setId} buttons={categoryArr} modal={true} defined={true} setInputsData={setInputsData} />
@@ -244,6 +245,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     flexDirection: "column",
+    paddingTop: Constants.statusBarHeight + 5,
   },
   carousselBox:{
     backgroundColor: "lightgrey",
