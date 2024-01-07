@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Login } from "./Screens/Login/Login";
 import { Register } from "./Screens/Register/Register";
 import { RequestContextProvider } from "./Context/RequestContext/RequestContext";
 import { CreateProfile } from "./Screens/CreateProfile/createProfile";
 import Json from "./assets/Utils/fr.json";
-import { Home } from "./Screens/Home/Home";
 import useSecureStore from "./assets/Utils/useSecureStore";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Event from "./Screens/Event/Event";
 import EditEvent from "./Screens/EditEvent/EditEvent";
-import CreateEvent from "./Screens/CreateEvent/CreateEvent";
-import Profile from "./Screens/Profile/Profile";
 import EditProfile from "./Screens/EditProfile/EditProfile";
 import Filter from "./Screens/Filter/Filter";
+import Tabs from "./Navigation/Tabs";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,7 +50,7 @@ export default function App() {
                 name={Json.login.label_1}
                 options={{
                   title: null,
-                  headerShown: false
+                  headerShown: false,
                 }}
               >
                 {(props) => <Login {...props} states={states} />}
@@ -71,23 +68,17 @@ export default function App() {
             </Stack.Screen>
           ) : (
             <>
-              <Stack.Screen name={Json.home.title} options={{ title: null, headerShown: false }}>
-                {(props) => <Home {...props} />}
-              </Stack.Screen>
+            <Stack.Screen name="Tabs" options={{headerShown: false}}>
+              {()=><Tabs states={states} />}
+            </Stack.Screen>
               <Stack.Screen name={Json.event.title} options={{ title: null }}>
                 {(props) => <Event {...props} />}
               </Stack.Screen>
               <Stack.Screen name={Json.editEvent.title}>
                 {(props) => <EditEvent {...props} />}
               </Stack.Screen>
-              <Stack.Screen name={Json.profile.title}>
-                {(props) => <Profile {...props} states={states} />}
-              </Stack.Screen>
               <Stack.Screen name={Json.editProfile.title}>
                 {(props) => <EditProfile {...props} />}
-              </Stack.Screen>
-              <Stack.Screen name={Json.createEvent.title}>
-                {(props) => <CreateEvent {...props} />}
               </Stack.Screen>
               <Stack.Screen name={Json.filter.title} options={{title: null, headerShown: false }}>
                 {(props) => <Filter {...props} />}
