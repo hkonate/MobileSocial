@@ -13,7 +13,7 @@ import Constants from 'expo-constants';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { handleCreate } from "./CreateEvent.function";
 
-const CreateEvent = ({ navigation: { goBack } }) => {
+const CreateEvent = ({ navigation: { navigate } }) => {
   const [inputsData, setInputsData] = useState([]);
   const [emptyField, setEmptyField] = useState(true);
   const [files, setFiles] = useState([]);
@@ -82,7 +82,6 @@ const CreateEvent = ({ navigation: { goBack } }) => {
 
   const indexPrice =  inputsData.findIndex(input => "price" in input)
   const indexInclusive =  inputsData.findIndex(input => "inclusive" in input)
-  
   return (
     <ScrollView style={styles.container}>
       <Text style={{marginTop: 10,...styles.subtitleModal}}>{Json.event.label_15}</Text>
@@ -221,7 +220,7 @@ const CreateEvent = ({ navigation: { goBack } }) => {
         onPress={async () => {
           try {
             const res = await handleCreate(files[0]?.files, date, inputsData);
-            if (res) goBack();
+            if (res) navigate(Json.home.title);
           } catch (error) {
             alert(error);
           }

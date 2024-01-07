@@ -40,7 +40,7 @@
     "label_5": "Votre compte est prêt à être utilisé. Vous serez redirigé vers la page d'accueil dans quelques secondes."
   },
   "home": {
-    "title": "Home",
+    "title": "Page d'acceuil",
     "label_1": "Événement à venir",
     "label_2": "À proximité de vous",
     "label_3": "Bonjour",
@@ -101,7 +101,7 @@
     "label_11": "Nombre de participants"
   },
   "profile": {
-    "title": "Profile",
+    "title": "Profil",
     "label_1": "Firstname",
     "label_2": "Lastname",
     "label_3": "Événements créés par",

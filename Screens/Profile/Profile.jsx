@@ -9,6 +9,7 @@ import Modify from "../../assets/Images/modify.png"
 import RectangularCard from "../../Component/RectangularCard";
 import useSecureStore from "../../assets/Utils/useSecureStore";
 import { RequestSucceed } from "../../Context/RequestContext/RequestActions";
+import Constant from "expo-constants"
 
 const Profile = ({ navigation, route, states }) => {
   const { user, dispatch } = useContext(RequestContext);
@@ -31,7 +32,6 @@ const Profile = ({ navigation, route, states }) => {
       fetchProfile();
     }, [])
     );
-    console.log(states);
   return (
     <View style={styles.container}>
       <View style={styles.top} >
@@ -108,16 +108,17 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     backgroundColor: "#fafafa",
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    paddingTop: Constant.statusBarHeight + 20
   },
   top:{
-    height: "50%",
+    height: "55%",
     alignItems: "center",
     justifyContent: "center",
     gap: 15
   },
   bot:{
-    height: "50%",
+    height: "45%",
     width: "100%",
   },
   imageBox:{
@@ -137,7 +138,6 @@ const styles = StyleSheet.create({
   avatar:{
     width: "100%",
     height: "100%",
-    borderRadius: 100,
     objectFit: "cover"
   },
   pseudo:{
@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     height: "20%",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    marginBottom: 20
   },
   leftInfo:{
     width: "40%",
