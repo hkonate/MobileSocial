@@ -16,6 +16,7 @@ import Json from "../../assets/Utils/fr.json";
 import { handleRegister } from "./Register.function";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
 import { Link } from "@react-navigation/native"
+import useSecureStore from "../../assets/Utils/useSecureStore";
 export const Register = ({ states }) => {
   const [userCredentials, setUserCredentials] = useState({});
   const [hidePwd, setHidePwd] = useState(true);
@@ -25,6 +26,7 @@ export const Register = ({ states }) => {
   const [errorMessage, setErrorMessage] = useState();
   const { dispatch, isFetching, error } = useContext(RequestContext);
   const { setUser } = states;
+  const {remove} = useSecureStore()
 
   return (
     <ScrollView style={styles.container}>
@@ -155,6 +157,7 @@ export const Register = ({ states }) => {
             if (!res.id) {
               setErrorMessage(res);
             } else {
+              await remove("createdProfile")
               setUser(res);
             }
           }}

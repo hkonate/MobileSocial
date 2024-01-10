@@ -46,13 +46,12 @@ const Event = ({ route, navigation }) => {
     }, [])
   );
   const similarEvents = events.filter((eventTofilter) => {
-    if (event?.id !== eventTofilter.id) {
       if (event?.inclusive.length > 0) {
-        return eventTofilter.inclusive.length > 0;
+        console.log("category",eventTofilter.title, eventTofilter.inclusive, event.inclusive);
+        return eventTofilter.inclusive.some(diet=> event.inclusive.includes(diet))
       } else {
         return eventTofilter.inclusive.length === 0;
       }
-    }
   });
   const titleBtn = event?.listOfAttendees.find(
     (attendee) => attendee.id === user.id

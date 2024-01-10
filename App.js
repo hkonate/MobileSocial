@@ -10,6 +10,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Event from "./Screens/Event/Event";
 import EditEvent from "./Screens/EditEvent/EditEvent";
 import EditProfile from "./Screens/EditProfile/EditProfile";
+import Profile from "./Screens/Profile/Profile";
 import Filter from "./Screens/Filter/Filter";
 import Tabs from "./Navigation/Tabs";
 
@@ -83,6 +84,9 @@ export default function App() {
               <Stack.Screen name={Json.filter.title} options={{title: null, headerShown: false }}>
                 {(props) => <Filter {...props} />}
               </Stack.Screen>
+              <Stack.Screen name={Json.profile.title} options={{title: null,  headerShown: false }}>
+                {(props)=><Profile {...props} states={states} />}
+            </Stack.Screen>
             </>
           )}
         </Stack.Navigator>
