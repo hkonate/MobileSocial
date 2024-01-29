@@ -1,12 +1,12 @@
 import React from 'react'
-import { StyleSheet, Text, View, Pressable, TouchableOpacity, Image, Modal } from 'react-native'
+import { StyleSheet, Text, View, Pressable, TouchableOpacity, Image, Modal, Platform, ScrollView } from 'react-native'
+import Constants from 'expo-constants';
 import Slider from "react-native-a11y-slider";
 import SelectMultiple from 'react-native-select-multiple'
 import ButtonGroup from "./ButtonGroup";
 import Json from "../assets/Utils/fr.json";
 import CLOSE from "../assets/Images/close.png"
 import { HandleEventFilter } from '../Screens/Filter/Filter.function';
-import { ScrollView } from 'react-native-virtualized-view';
 
 const ModalC = ({setModalVisible, modalVisible, rangePrice, inclusiveArr, eventName, navigation, setRangePrice, id, setId, setEvents, filter, setInclusiveArr}) => {
   const categoryArr = ["", "MOVIE", "ART", "STUDY", "CONCERT", "SPORT", "KARAOKE", "RESTAURANT", "GAMING", "OTHERS"]  
@@ -32,10 +32,10 @@ const ModalC = ({setModalVisible, modalVisible, rangePrice, inclusiveArr, eventN
       Alert.alert('Modal has been closed.');
       setModalVisible(!modalVisible);
     }}>
-    <View style={styles.centeredView}>
+    <ScrollView style={styles.centeredView}>
       <View style={styles.modalView}>
         <Text style={styles.modalText}>{Json.event.label_14}</Text>
-        <TouchableOpacity  onPress={() => setModalVisible(!modalVisible)} style={styles.closeModal}><Image source={CLOSE} /></TouchableOpacity>
+        <TouchableOpacity  onPress={() => setModalVisible(!modalVisible)} style={styles.closeModal}><Image style={{width: 30, height: 30}} source={CLOSE} /></TouchableOpacity>
         <View style={styles.underline}></View>
         <Text style={styles.subtitleModal}>{Json.event.label_15}</Text>
         <View style={styles.modalBtnGrp}>
@@ -62,7 +62,7 @@ const ModalC = ({setModalVisible, modalVisible, rangePrice, inclusiveArr, eventN
           <Text style={styles.textStyle}>Filtrer</Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   </Modal>
   )
 }
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         padding: 10,
         elevation: 5,
-        position: "relative"
+        position: "relative",
+        paddingTop: Platform.OS === "ios" && Constants.statusBarHeight + 10,
       },
       underline:{
         borderBottomWidth: 1,
@@ -116,6 +117,6 @@ const styles = StyleSheet.create({
       closeModal:{
         position: "absolute",
         right: "10%",
-        top: "2%"
+        top:  Platform.OS === "ios" ? "3.5%" : "1%"
       },
 })

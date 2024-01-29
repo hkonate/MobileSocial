@@ -18,12 +18,13 @@ const Filter = ({route, navigation}) => {
   useEffect(()=>{
     const categoryArr = ["", "MOVIE", "ART", "STUDY", "CONCERT", "SPORT", "KARAOKE", "RESTAURANT", "GAMING", "OTHERS"]
     const fetchByFilter = async ()=>{
+      console.log("filter");
         await HandleEventFilter(navigation.goBack, setEvents, categoryArr[id], eventName, inclusiveArr, rangePrice)
       }
       fetchByFilter()
     }, [])
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.inputBox}>
         <TouchableOpacity style={{ width: "7%"}} onPress={()=> navigation.goBack()}>
         <Image style={styles.image} source={Left} />
@@ -35,7 +36,7 @@ const Filter = ({route, navigation}) => {
       <Text style={styles.findText}>{events && (events.length > 1 ? `${events.length} ${Json.filter.label_1}` : `${events.length} ${Json.filter.label_2}`)}</Text>
       <RectangularCard events={events} navigation={navigation} />
       <Modal setModalVisible={setModalVisible} modalVisible={modalVisible} rangePrice={rangePrice} inclusiveArr={inclusiveArr} id={id} eventName={eventName} navigation={navigation} setRangePrice={setRangePrice} setId={setId} setEvents={setEvents} filter={true} setInclusiveArr={setInclusiveArr}/>
-    </ScrollView>
+    </View>
   )
 }
 

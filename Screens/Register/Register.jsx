@@ -26,7 +26,7 @@ export const Register = ({ states }) => {
   const [errorMessage, setErrorMessage] = useState();
   const { dispatch, isFetching, error } = useContext(RequestContext);
   const { setUser } = states;
-  const {remove} = useSecureStore()
+  const {removeValue } = useSecureStore()
 
   return (
     <ScrollView style={styles.container}>
@@ -146,6 +146,7 @@ export const Register = ({ states }) => {
         }
       </View>
       </View>
+      <View style={{alignItems: "center"}}>
       {!isFetching ? (
         <TouchableOpacity
           style={styles.button}
@@ -157,7 +158,7 @@ export const Register = ({ states }) => {
             if (!res.id) {
               setErrorMessage(res);
             } else {
-              await remove("createdProfile")
+              await removeValue("createdProfile")
               setUser(res);
             }
           }}
@@ -165,8 +166,9 @@ export const Register = ({ states }) => {
           <Text style={styles.textBtn}>{Json.register.title}</Text>
           </TouchableOpacity>
       ) : (
-        <ActivityIndicator style={styles.loading} size="meduim" color="#0000ff" />
+        <ActivityIndicator style={styles.loading} size="large" color="#0000ff" />
       )}
+      </View>
       {error && <Text style={styles.textErr}>{Json.register[errorMessage]}</Text>}
       <View style={styles.linkContainer}>
       <Text style={styles.account}>{Json.register.label_7}</Text>
@@ -192,7 +194,7 @@ const styles = StyleSheet.create({
   },
   input:{
     backgroundColor: "#FAFAFA",
-    width: 240,
+    width: Platform.OS === "ios" ? 290 : 240,
     height: 45,
     borderRadius: 16,
     paddingLeft: 10,

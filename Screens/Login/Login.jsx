@@ -9,7 +9,7 @@ import {
   StatusBar,
   TouchableOpacity,
   StyleSheet,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import Tooltip from "react-native-walkthrough-tooltip";
 import { RequestContext } from "../../Context/RequestContext/RequestContext";
@@ -98,6 +98,7 @@ export const Login = ({ navigation, states }) => {
           </TouchableOpacity>
         </Tooltip>
       </View>
+      <View style={{alignItems: "center"}}>
       {!isFetching ? (
         <TouchableOpacity
           style={styles.button}
@@ -117,6 +118,7 @@ export const Login = ({ navigation, states }) => {
       ) : (
         <ActivityIndicator style={styles.loading} size="small" color="#0000ff" />
       )}
+      </View>
       {error && <Text style={styles.textErr}>{Json.login[errorMessage]}</Text>}
       <View style={styles.linkContainer}>
       <Text style={styles.account}>{Json.login.label_8}</Text>
@@ -150,6 +152,7 @@ const styles = StyleSheet.create({
   inputBox: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     gap: 10,
     position: "relative"
   },
@@ -199,7 +202,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20, 
     zIndex: 2,
-    right: 45,
+    right: Platform.OS === "ios" ? 75 : 45,
     bottom: 52
   }
 });

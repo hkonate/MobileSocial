@@ -84,9 +84,6 @@ export default function App() {
               <Stack.Screen name={Json.filter.title} options={{title: null, headerShown: false }}>
                 {(props) => <Filter {...props} />}
               </Stack.Screen>
-              <Stack.Screen name={Json.profile.title} options={{title: null,  headerShown: false }}>
-                {(props)=><Profile {...props} states={states} />}
-            </Stack.Screen>
             </>
           )}
         </Stack.Navigator>

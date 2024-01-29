@@ -55,9 +55,11 @@ export const Home = ({ navigation }) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.userInfosBox}>
-        <TouchableOpacity onPress={()=> navigation.navigate(Json.profile.title)} style={styles.avatarBox}>
-         {user?.profile?.picture? <Image style={styles.avatar} source={{uri: user.profile.picture}} />:
-          <Text style={styles.initial}>{user?.firstname[0]?.toUpperCase() + user?.lastname[0]?.toUpperCase()}</Text>}
+        <TouchableOpacity style={styles.avatarBox}>
+         {user?.profile?.picture ? 
+         <Image style={styles.avatar} source={{uri: user.profile.picture}} /> :
+          <Text style={styles.initial}>{user?.firstname[0]?.toUpperCase() + user?.lastname[0]?.toUpperCase()}</Text>
+          }
         </TouchableOpacity>
         <View style={styles.welcomeBox}>
           <Text style={styles.welcomeText}>{Json.event.label_13}</Text>
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 50,
-    objectFit: "contain"
+    objectFit: "cover"
   },
   initial:{
     color: "white"

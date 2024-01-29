@@ -45,6 +45,7 @@ const Event = ({ route, navigation }) => {
       fetchEvent();
     }, [])
   );
+  console.log( event?.images);
   const similarEvents = events.filter((eventTofilter) => {
       if (event?.inclusive.length > 0) {
         console.log("category",eventTofilter.title, eventTofilter.inclusive, event.inclusive);
@@ -287,7 +288,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height:"100%",
     borderRadius: 25,
-    objectFit: "contain"
+    objectFit: "cover"
   },
   initial:{
     color: "white",

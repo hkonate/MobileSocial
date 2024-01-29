@@ -46,6 +46,7 @@ export const handleSubmit = async (email, password, dispatch) => {
       await setItemAsync("userCredentials", JSON.stringify(userCredentials));
       return userCredentials;
     } else {
+      console.log(userCredentials);
       dispatch(RequestFailure());
       return "error_3";
     }

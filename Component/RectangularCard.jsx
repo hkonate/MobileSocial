@@ -12,9 +12,9 @@ import othersImage from '../assets/Images/OTHERS.jpg';
 import Json from "../assets/Utils/fr.json"
 
 const RectangularCard = ({events, navigation}) => {
-   
+   if(events)
   return (
-    events && events.map((event, idx) =>{
+    events && events?.map((event, idx) =>{
         const dateActuelle = new Date(event.schedule)
         const currentDate = new Date()
     const options = {
